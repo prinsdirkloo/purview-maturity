@@ -190,11 +190,11 @@ function ThemeToggle({ dark, onToggle, t }) {
   return (
     <button onClick={onToggle} style={{ display:"flex", alignItems:"center", gap:8, padding:"6px 14px", borderRadius:99, cursor:"pointer", background: dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)", border:`1px solid ${dark?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.12)"}`, transition:"all 0.2s", fontFamily:CAL }}>
       <div style={{ width:36, height:20, borderRadius:10, position:"relative", background: dark?BUI_ORANGE:"rgba(0,0,0,0.15)", transition:"background 0.25s", border:`1px solid ${dark?BUI_ORANGE+"80":"rgba(0,0,0,0.15)"}`, flexShrink:0 }}>
-        <div style={{ position:"absolute", top:2, left: dark?18:2, width:14, height:14, borderRadius:"50%", background:"#fff", transition:"left 0.22s cubic-bezier(.4,0,.2,1)", boxShadow:"0 1px 3px rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:9 }}>
+        <div style={{ position:"absolute", top:2, left: dark?18:2, width:14, height:14, borderRadius:"50%", background:"#fff", transition:"left 0.22s cubic-bezier(.4,0,.2,1)", boxShadow:"0 1px 3px rgba(0,0,0,0.3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13 }}>
           {dark?"☀":"☾"}
         </div>
       </div>
-      <span style={{ fontSize:9, color:t.text4, letterSpacing:"0.05em", fontWeight:600 }}>{dark?"DARK":"LIGHT"}</span>
+      <span style={{ fontSize:12, color:t.text4, letterSpacing:"0.05em", fontWeight:600 }}>{dark?"DARK":"LIGHT"}</span>
     </button>
   );
 }
@@ -211,37 +211,37 @@ function UserImpactPanel({ impactKey, dark, t }) {
     <div style={{ background:imp.colorBg(dark), border:`1px solid ${imp.colorBorder(dark)}`, borderRadius:12, overflow:"hidden", marginBottom:18 }}>
       <div style={{ padding:"14px 20px", borderBottom:`1px solid ${imp.colorBorder(dark)}`, display:"flex", alignItems:"center", justifyContent:"space-between", gap:16 }}>
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-          <div style={{ fontSize:9, fontWeight:700, letterSpacing:"0.1em", color:imp.color }}>USER IMPACT</div>
-          <div style={{ fontSize:9, fontWeight:700, color:imp.color, background:`${imp.color}18`, padding:"3px 12px", borderRadius:99, border:`1px solid ${imp.color}40` }}>{imp.level}</div>
+          <div style={{ fontSize:11, fontWeight:700, letterSpacing:"0.1em", color:imp.color }}>USER IMPACT</div>
+          <div style={{ fontSize:11, fontWeight:700, color:imp.color, background:`${imp.color}18`, padding:"3px 12px", borderRadius:99, border:`1px solid ${imp.color}40` }}>{imp.level}</div>
         </div>
         <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-          <span style={{ fontSize:9, color:t.text4, marginRight:4 }}>Impact level</span>
+          <span style={{ fontSize:13, color:t.text4, marginRight:4 }}>Impact level</span>
           <Pips score={imp.score} color={imp.color} empty={t.pipEmpty} size={14}/>
         </div>
       </div>
       <div style={{ padding:"14px 20px 0" }}>
-        <p style={{ fontSize:9, color:t.text2, lineHeight:1.65, margin:0 }}>{imp.summary}</p>
+        <p style={{ fontSize:14, color:t.text2, lineHeight:1.65, margin:0 }}>{imp.summary}</p>
       </div>
       {imp.personas.length > 0 && (
         <div style={{ padding:"12px 20px 0" }}>
-          <div style={{ fontSize:9, color:t.text5, letterSpacing:"0.09em", fontWeight:700, marginBottom:8 }}>AFFECTED PERSONAS</div>
+          <div style={{ fontSize:11, color:t.text5, letterSpacing:"0.09em", fontWeight:700, marginBottom:8 }}>AFFECTED PERSONAS</div>
           <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
             {imp.personas.map((p,i)=>(
-              <span key={i} style={{ fontSize:9, padding:"3px 11px", borderRadius:99, background:`${imp.color}12`, color:imp.color, border:`1px solid ${imp.color}30` }}>{p}</span>
+              <span key={i} style={{ fontSize:13, padding:"3px 11px", borderRadius:99, background:`${imp.color}12`, color:imp.color, border:`1px solid ${imp.color}30` }}>{p}</span>
             ))}
           </div>
         </div>
       )}
       <div style={{ padding:"14px 20px" }}>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
-          <div style={{ fontSize:9, color:t.text5, letterSpacing:"0.09em", fontWeight:700 }}>CHANGE MANAGEMENT ACTIVITIES</div>
-          <span style={{ fontSize:9, padding:"2px 10px", borderRadius:99, background:urg.bg, color:urg.color, border:`1px solid ${urg.border}`, fontWeight:700 }}>{urg.label}</span>
+          <div style={{ fontSize:13, color:t.text5, letterSpacing:"0.09em", fontWeight:700 }}>CHANGE MANAGEMENT ACTIVITIES</div>
+          <span style={{ fontSize:13, padding:"2px 10px", borderRadius:99, background:urg.bg, color:urg.color, border:`1px solid ${urg.border}`, fontWeight:700 }}>{urg.label}</span>
         </div>
         <div style={{ display:"flex", flexDirection:"column", gap:7 }}>
           {imp.cmActions.map((action,i)=>(
             <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"9px 12px", background:t.cmItem, borderRadius:8, border:`1px solid ${t.cmItemBorder}` }}>
-              <div style={{ width:20, height:20, borderRadius:"50%", flexShrink:0, background:`${imp.color}20`, border:`1px solid ${imp.color}40`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9, fontWeight:700, color:imp.color, marginTop:1 }}>{i+1}</div>
-              <span style={{ fontSize:9, color:t.text3, lineHeight:1.55 }}>{action}</span>
+              <div style={{ width:20, height:20, borderRadius:"50%", flexShrink:0, background:`${imp.color}20`, border:`1px solid ${imp.color}40`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:700, color:imp.color, marginTop:1 }}>{i+1}</div>
+              <span style={{ fontSize:14, color:t.text3, lineHeight:1.55 }}>{action}</span>
             </div>
           ))}
         </div>
@@ -321,7 +321,7 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
     return (
       <div style={{ marginBottom:6 }}>
         {/* Track label */}
-        <div style={{ fontSize:9, fontWeight:700, letterSpacing:"0.09em", color:trackColor, marginBottom:5, fontFamily:CAL }}>{trackLabel}</div>
+        <div style={{ fontSize:11, fontWeight:700, letterSpacing:"0.09em", color:trackColor, marginBottom:5, fontFamily:CAL }}>{trackLabel}</div>
         {/* Phase blocks — proportional widths */}
         <div style={{ position:"relative", height:TRACK_H, display:"flex", gap:2 }}>
           {phases.map((p, i) => {
@@ -350,13 +350,13 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
                   padding:"5px 5px 3px", display:"flex", flexDirection:"column", justifyContent:"space-between",
                 }}>
                   <div>
-                    <div style={{ fontSize:9, fontWeight:700, color: covered?p.zoneColor:p.zoneColor, letterSpacing:"0.05em", lineHeight:1.2, fontFamily:CAL }}>{p.zone}</div>
-                    <div style={{ fontSize:9, fontWeight:700, color: covered?t.text1:t.text4, lineHeight:1.25, marginTop:2, fontFamily:CAL }}>{p.title}</div>
-                    {p.isPilot && <div style={{ fontSize:9, color:p.zoneColor, background:`${p.zoneColor}15`, padding:"1px 4px", borderRadius:99, display:"inline-block", marginTop:2, border:`1px solid ${p.zoneColor}40`, fontFamily:CAL }}>PILOT</div>}
+                    <div style={{ fontSize:11, fontWeight:700, color: covered?p.zoneColor:p.zoneColor, letterSpacing:"0.05em", lineHeight:1.2, fontFamily:CAL }}>{p.zone}</div>
+                    <div style={{ fontSize:12, fontWeight:700, color: covered?t.text1:t.text4, lineHeight:1.25, marginTop:2, fontFamily:CAL }}>{p.title}</div>
+                    {p.isPilot && <div style={{ fontSize:10, color:p.zoneColor, background:`${p.zoneColor}15`, padding:"1px 4px", borderRadius:99, display:"inline-block", marginTop:2, border:`1px solid ${p.zoneColor}40`, fontFamily:CAL }}>PILOT</div>}
                   </div>
                   <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                    <span style={{ fontSize:9, color: covered?t.text3:t.text5, fontFamily:CAL }}>{durations[i]}w</span>
-                    <span style={{ fontSize:9, fontWeight:700, color: covered?p.zoneColor:t.text5, fontFamily:CAL }}>{p.num}</span>
+                    <span style={{ fontSize:11, color: covered?t.text3:t.text5, fontFamily:CAL }}>{durations[i]}w</span>
+                    <span style={{ fontSize:11, fontWeight:700, color: covered?p.zoneColor:t.text5, fontFamily:CAL }}>{p.num}</span>
                   </div>
                 </div>
               </div>
@@ -372,12 +372,12 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
 
       {/* Title */}
       <div style={{ marginBottom:18 }}>
-        <h1 style={{ fontSize:20, fontWeight:700, color:t.text1, margin:"0 0 4px", fontFamily:CAL }}>Purview Adoption Roadmap</h1>
+        <h1 style={{ fontSize:22, fontWeight:700, color:t.text1, margin:"0 0 4px", fontFamily:CAL }}>Purview Adoption Roadmap</h1>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:16 }}>
-          <p style={{ fontSize:9, color:t.text4, margin:0, fontFamily:CAL }}>{showScope ? "Phase widths are proportional to typical duration. Drag the orange line to set the BUI engagement boundary." : "Phase widths are proportional to typical duration. All phases shown — toggle scope to set the engagement boundary."}</p>
+          <p style={{ fontSize:14, color:t.text4, margin:0, fontFamily:CAL }}>{showScope ? "Phase widths are proportional to typical duration. Drag the orange line to set the BUI engagement boundary." : "Phase widths are proportional to typical duration. All phases shown — toggle scope to set the engagement boundary."}</p>
           <button onClick={()=>setShowScope(s=>!s)} style={{
             flexShrink:0, display:"flex", alignItems:"center", gap:8, padding:"8px 16px",
-            borderRadius:99, cursor:"pointer", fontFamily:CAL, fontSize:9, fontWeight:600,
+            borderRadius:99, cursor:"pointer", fontFamily:CAL, fontSize:14, fontWeight:600,
             background: showScope ? `${BUI_ORANGE}15` : (dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)"),
             border: `1.5px solid ${showScope ? BUI_ORANGE : (dark?"rgba(255,255,255,0.15)":"rgba(0,0,0,0.15)")}`,
             color: showScope ? BUI_ORANGE : t.text3, transition:"all 0.18s",
@@ -405,8 +405,8 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
             { label:"Labelling", color:"#a78bfa", text: boundaryLabel(labelCum, labelPhases, labelBound) },
           ].map(b=>(
             <div key={b.label} style={{ padding:"8px 14px", borderRadius:8, background:dark?`${b.color}0a`:`${b.color}08`, border:`1px solid ${b.color}25` }}>
-              <span style={{ fontSize:9, fontWeight:700, color:b.color, letterSpacing:"0.09em", marginRight:8, fontFamily:CAL }}>{b.label} ENGAGEMENT ENDS</span>
-              <span style={{ fontSize:9, fontWeight:700, color:t.text1, fontFamily:CAL }}>{b.text}</span>
+              <span style={{ fontSize:11, fontWeight:700, color:b.color, letterSpacing:"0.09em", marginRight:8, fontFamily:CAL }}>{b.label} ENGAGEMENT ENDS</span>
+              <span style={{ fontSize:11, fontWeight:700, color:t.text1, fontFamily:CAL }}>{b.text}</span>
             </div>
           ))}
         </div>}
@@ -458,7 +458,7 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
             <div style={{
               position:"absolute", top:22, left:6,
               background:BUI_ORANGE, color:"#fff",
-              fontSize:9, fontWeight:700, letterSpacing:"0.06em",
+              fontSize:11, fontWeight:700, letterSpacing:"0.06em",
               padding:"2px 7px", borderRadius:99,
               whiteSpace:"nowrap", fontFamily:CAL,
               boxShadow:"0 1px 4px rgba(0,0,0,0.2)",
@@ -478,30 +478,30 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
           <div style={{ display:"flex", borderTop:`1px solid ${t.border}`, paddingTop:6 }}>
             {Array.from({length: Math.ceil(maxWeeks/4)+1}).map((_,i)=>(
               <div key={i} style={{ flex:1, maxWidth:`${4/maxWeeks*100}%` }}>
-                <div style={{ fontSize:9, color:t.text5, fontFamily:CAL }}>w{i*4}</div>
+                <div style={{ fontSize:11, color:t.text5, fontFamily:CAL }}>w{i*4}</div>
               </div>
             ))}
           </div>
-          <div style={{ fontSize:9, color:t.text5, marginTop:2, fontFamily:CAL }}>Approximate weeks from engagement start</div>
+          <div style={{ fontSize:11, color:t.text5, marginTop:2, fontFamily:CAL }}>Approximate weeks from engagement start</div>
         </div>
       </div>
 
       {/* ── LEGEND ── */}
       <div style={{ display:"flex", gap:20, flexWrap:"wrap", marginBottom:16 }}>
-        <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:9, color:t.text3, fontFamily:CAL }}>
+        <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:13, color:t.text3, fontFamily:CAL }}>
           <div style={{ width:24, height:8, borderRadius:2, background:"linear-gradient(90deg,#10b981,"+BUI_ORANGE+")" }}/>
           <span>Within BUI engagement scope</span>
         </div>
-        <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:9, color:t.text3, fontFamily:CAL }}>
+        <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:13, color:t.text3, fontFamily:CAL }}>
           <div style={{ width:24, height:8, borderRadius:2, background: dark?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.08)" }}/>
           <span>Customer continues independently</span>
         </div>
-        {showScope && <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:9, color:t.text3, fontFamily:CAL }}>
+        {showScope && <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:13, color:t.text3, fontFamily:CAL }}>
           <div style={{ width:2, height:16, background:BUI_ORANGE }}/>
           <span>Engagement boundary (drag to adjust)</span>
         </div>}
         {[{z:"DISCOVER",c:"#10b981"},{z:"EDUCATE",c:BUI_ORANGE},{z:"ENFORCE",c:"#ef4444"},{z:"GOVERN",c:BUI_GRAY}].map(z=>(
-          <div key={z.z} style={{ display:"flex", alignItems:"center", gap:5, fontSize:9, color:t.text3, fontFamily:CAL }}>
+          <div key={z.z} style={{ display:"flex", alignItems:"center", gap:5, fontSize:13, color:t.text3, fontFamily:CAL }}>
             <div style={{ width:10, height:10, borderRadius:2, background:z.c }}/>
             <span>{z.z}</span>
           </div>
@@ -511,24 +511,24 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
       {/* ── SMART CALLOUT ── */}
       {dlpBound >= 5 && labelBound >= 6 && (
         <div style={{ padding:"12px 16px", borderRadius:10, background:"rgba(16,185,129,0.08)", border:"1px solid rgba(16,185,129,0.25)", marginBottom:12 }}>
-          <div style={{ fontSize:9, fontWeight:700, color:"#10b981", letterSpacing:"0.08em", marginBottom:4, fontFamily:CAL }}>CONVERGENCE SCOPE REACHED</div>
-          <p style={{ fontSize:9, color:t.text3, margin:0, lineHeight:1.55, fontFamily:CAL }}>Both tracks are scoped to the convergence point. Label-conditioned DLP hard block policies are within scope of the engagement.</p>
+          <div style={{ fontSize:11, fontWeight:700, color:"#10b981", letterSpacing:"0.08em", marginBottom:4, fontFamily:CAL }}>CONVERGENCE SCOPE REACHED</div>
+          <p style={{ fontSize:14, color:t.text3, margin:0, lineHeight:1.55, fontFamily:CAL }}>Both tracks are scoped to the convergence point. Label-conditioned DLP hard block policies are within scope of the engagement.</p>
         </div>
       )}
       {((dlpBound - labelBound) > 2) && (
         <div style={{ padding:"12px 16px", borderRadius:10, background:`${BUI_ORANGE}0a`, border:`1px solid ${BUI_ORANGE}30`, marginBottom:12 }}>
-          <div style={{ fontSize:9, fontWeight:700, color:BUI_ORANGE, letterSpacing:"0.08em", marginBottom:4, fontFamily:CAL }}>TRACK ALIGNMENT NOTE</div>
-          <p style={{ fontSize:9, color:t.text3, margin:0, lineHeight:1.55, fontFamily:CAL }}>DLP is significantly ahead of Labelling in scope. Hard DLP policies conditioned on sensitivity labels won't be effective until labelling reaches mandatory classification (phase 05).</p>
+          <div style={{ fontSize:11, fontWeight:700, color:BUI_ORANGE, letterSpacing:"0.08em", marginBottom:4, fontFamily:CAL }}>TRACK ALIGNMENT NOTE</div>
+          <p style={{ fontSize:14, color:t.text3, margin:0, lineHeight:1.55, fontFamily:CAL }}>DLP is significantly ahead of Labelling in scope. Hard DLP policies conditioned on sensitivity labels won't be effective until labelling reaches mandatory classification (phase 05).</p>
         </div>
       )}
       {((labelBound - dlpBound) > 2) && (
         <div style={{ padding:"12px 16px", borderRadius:10, background:`${BUI_ORANGE}0a`, border:`1px solid ${BUI_ORANGE}30`, marginBottom:12 }}>
-          <div style={{ fontSize:9, fontWeight:700, color:BUI_ORANGE, letterSpacing:"0.08em", marginBottom:4, fontFamily:CAL }}>TRACK ALIGNMENT NOTE</div>
-          <p style={{ fontSize:9, color:t.text3, margin:0, lineHeight:1.55, fontFamily:CAL }}>Labelling is significantly ahead of DLP in scope. Ensure DLP policies are progressed to use label conditions before broad encryption is applied.</p>
+          <div style={{ fontSize:11, fontWeight:700, color:BUI_ORANGE, letterSpacing:"0.08em", marginBottom:4, fontFamily:CAL }}>TRACK ALIGNMENT NOTE</div>
+          <p style={{ fontSize:14, color:t.text3, margin:0, lineHeight:1.55, fontFamily:CAL }}>Labelling is significantly ahead of DLP in scope. Ensure DLP policies are progressed to use label conditions before broad encryption is applied.</p>
         </div>
       )}
 
-      <div style={{ fontSize:9, color:t.text4, lineHeight:1.55, fontFamily:CAL }}>
+      <div style={{ fontSize:14, color:t.text4, lineHeight:1.55, fontFamily:CAL }}>
         <span style={{ fontWeight:700, color:t.text3 }}>Tip: </span>
         Click any phase to jump to its detail. {showScope ? "Drag the orange line to set the engagement scope — it moves across both tracks at once." : "Toggle 'BUI Scope Line' to show the draggable engagement boundary."} Phase widths reflect typical duration — wider blocks take longer.
       </div>
@@ -566,13 +566,13 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
               <div key={i}>
                 <div style={{ margin:"6px 14px", borderTop:`1px dashed ${p.color}50` }}/>
                 <button onClick={()=>{setActive(i);setTab("overview");}} style={{ width:"100%", padding:"10px 14px", textAlign:"left", background:on?`${p.color}0e`:"transparent", border:"none", borderLeft:`3px solid ${on?p.color:"transparent"}`, cursor:"pointer", display:"flex", alignItems:"center", gap:10, transition:"all 0.14s" }}>
-                  <div style={{ width:34, height:34, borderRadius:8, flexShrink:0, background:on?`${p.color}18`:t.sidebarItem, border:`1px solid ${on?p.color+"80":p.color+"40"}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9 }}>{p.icon}</div>
+                  <div style={{ width:34, height:34, borderRadius:8, flexShrink:0, background:on?`${p.color}18`:t.sidebarItem, border:`1px solid ${on?p.color+"80":p.color+"40"}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13 }}>{p.icon}</div>
                   <div style={{ minWidth:0, flex:1 }}>
                     <div style={{ display:"flex", alignItems:"center", gap:5, marginBottom:2 }}>
-                      <span style={{ fontSize:9, fontWeight:700, letterSpacing:"0.1em", color:p.color, background:`${p.color}18`, padding:"1px 6px", borderRadius:99, border:`1px solid ${p.color}60` }}>PILOT</span>
+                      <span style={{ fontSize:11, fontWeight:700, letterSpacing:"0.1em", color:p.color, background:`${p.color}18`, padding:"1px 6px", borderRadius:99, border:`1px solid ${p.color}60` }}>PILOT</span>
                     </div>
-                    <div style={{ fontSize:9, fontWeight:on?700:400, color:on?t.text1:t.text4, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{p.title}</div>
-                    <div style={{ fontSize:9, color:p.color, opacity:0.75, marginTop:2 }}>{p.pilotLabel ? `→ ${p.pilotLabel.toLowerCase()}` : "→ continues to phase 03"}</div>
+                    <div style={{ fontSize:14, fontWeight:on?700:400, color:on?t.text1:t.text4, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{p.title}</div>
+                    <div style={{ fontSize:12, color:p.color, opacity:0.75, marginTop:2 }}>{p.pilotLabel ? `→ ${p.pilotLabel.toLowerCase()}` : "→ continues to phase 03"}</div>
                   </div>
                 </button>
                 <div style={{ margin:"6px 14px", borderTop:`1px dashed ${p.color}50` }}/>
@@ -581,14 +581,14 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
           }
           return (
             <button key={i} onClick={()=>{setActive(i);setTab("overview");}} style={{ width:"100%", padding:"10px 14px", textAlign:"left", background:on?`${p.color}0e`:"transparent", border:"none", borderLeft:`3px solid ${on?p.color:"transparent"}`, cursor:"pointer", display:"flex", alignItems:"center", gap:10, transition:"all 0.14s" }}>
-              <div style={{ width:34, height:34, borderRadius:8, flexShrink:0, background:on?`${p.color}18`:t.sidebarItem, border:`1px solid ${on?p.color+"45":t.sidebarBorder}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:9 }}>{p.icon}</div>
+              <div style={{ width:34, height:34, borderRadius:8, flexShrink:0, background:on?`${p.color}18`:t.sidebarItem, border:`1px solid ${on?p.color+"45":t.sidebarBorder}`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13 }}>{p.icon}</div>
               <div style={{ minWidth:0, flex:1 }}>
-                <div style={{ fontSize:9, letterSpacing:"0.08em", fontWeight:700, marginBottom:1, color:on?p.color:t.text5 }}>{p.num} · {p.zone}</div>
-                <div style={{ fontSize:9, fontWeight:on?700:400, color:on?t.text1:t.text4, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{p.title}</div>
+                <div style={{ fontSize:11, letterSpacing:"0.08em", fontWeight:700, marginBottom:1, color:on?p.color:t.text5 }}>{p.num} · {p.zone}</div>
+                <div style={{ fontSize:14, fontWeight:on?700:400, color:on?t.text1:t.text4, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{p.title}</div>
                 <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:4 }}>
                   <Pips score={pImp.score} color={pImp.color} empty={t.pipEmpty} size={6}/>
-                  <span style={{ fontSize:9, color:pImp.color, opacity:0.85, marginLeft:1 }}>{pImp.level}</span>
-                  {p.license && <span style={{ marginLeft:"auto", fontSize:9, fontWeight:700, letterSpacing:"0.05em", padding:"1px 6px", borderRadius:99, background:p.license.addOn?`rgba(217,134,28,0.15)`:`rgba(16,185,129,0.12)`, color:p.license.addOn?BUI_ORANGE:"#059669", border:`1px solid ${p.license.addOn?"rgba(217,134,28,0.35)":"rgba(16,185,129,0.3)"}` }}>{p.license.addOn?"E3 +":"E3"}</span>}
+                  <span style={{ fontSize:11, color:pImp.color, opacity:0.85, marginLeft:1 }}>{pImp.level}</span>
+                  {p.license && <span style={{ marginLeft:"auto", fontSize:11, fontWeight:700, letterSpacing:"0.05em", padding:"1px 6px", borderRadius:99, background:p.license.addOn?`rgba(217,134,28,0.15)`:`rgba(16,185,129,0.12)`, color:p.license.addOn?BUI_ORANGE:"#059669", border:`1px solid ${p.license.addOn?"rgba(217,134,28,0.35)":"rgba(16,185,129,0.3)"}` }}>{p.license.addOn?"E3 +":"E3"}</span>}
                 </div>
               </div>
             </button>
@@ -600,19 +600,19 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
       <main style={{ flex:1, overflowY:"auto", padding:"28px 40px", background:t.bg, transition:"background 0.25s" }}>
         {/* Zone + phase + impact row */}
         <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10, flexWrap:"wrap" }}>
-          <div style={{ fontSize:9, padding:"3px 11px", borderRadius:99, border:`1px solid ${phase.zoneColor}40`, color:phase.zoneColor, background:`${phase.zoneColor}0d`, letterSpacing:"0.1em", fontWeight:700 }}>{phase.zone}</div>
-          <span style={{ fontSize:9, color:t.text5, letterSpacing:"0.08em" }}>{phase.isPilot ? `PHASE ${phase.num} OF ${String(total).padStart(2,"0")}` : `PHASE ${phase.num} OF ${String(total).padStart(2,"0")}`}</span>
-          {phase.isPilot && <span style={{ fontSize:9, padding:"2px 9px", borderRadius:99, background:`${phase.color}12`, border:`1px dashed ${phase.color}80`, color:phase.color, fontWeight:700, letterSpacing:"0.08em" }}>{phase.pilotLabel || "CONTINUES TO PHASE 04"}</span>}
+          <div style={{ fontSize:13, padding:"3px 11px", borderRadius:99, border:`1px solid ${phase.zoneColor}40`, color:phase.zoneColor, background:`${phase.zoneColor}0d`, letterSpacing:"0.1em", fontWeight:700 }}>{phase.zone}</div>
+          <span style={{ fontSize:12, color:t.text5, letterSpacing:"0.08em" }}>{phase.isPilot ? `PHASE ${phase.num} OF ${String(total).padStart(2,"0")}` : `PHASE ${phase.num} OF ${String(total).padStart(2,"0")}`}</span>
+          {phase.isPilot && <span style={{ fontSize:13, padding:"2px 9px", borderRadius:99, background:`${phase.color}12`, border:`1px dashed ${phase.color}80`, color:phase.color, fontWeight:700, letterSpacing:"0.08em" }}>{phase.pilotLabel || "CONTINUES TO PHASE 04"}</span>}
           <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:8 }}>
             {phase.license && (
               <div style={{ display:"flex", alignItems:"center", gap:5, padding:"4px 12px", borderRadius:99, background:phase.license.addOn?`rgba(217,134,28,0.1)`:`rgba(16,185,129,0.08)`, border:`1px solid ${phase.license.addOn?"rgba(217,134,28,0.3)":"rgba(16,185,129,0.25)"}` }}>
                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="0.5" y="0.5" width="10" height="10" rx="2" stroke={phase.license.addOn?BUI_ORANGE:"#059669"} strokeWidth="1"/><path d="M2.5 5.5h6M5.5 2.5v6" stroke={phase.license.addOn?BUI_ORANGE:"#059669"} strokeWidth="1.2" strokeLinecap="round"/></svg>
-                <span style={{ fontSize:9, fontWeight:700, letterSpacing:"0.06em", color:phase.license.addOn?BUI_ORANGE:"#059669" }}>{phase.license.addOn ? "E3 + Purview Suite" : "M365 E3"}</span>
+                <span style={{ fontSize:11, fontWeight:700, letterSpacing:"0.06em", color:phase.license.addOn?BUI_ORANGE:"#059669" }}>{phase.license.addOn ? "E3 + Purview Suite" : "M365 E3"}</span>
               </div>
             )}
             <div style={{ display:"flex", alignItems:"center", gap:8, padding:"4px 14px 4px 10px", borderRadius:99, background:imp.colorBg(dark), border:`1px solid ${imp.colorBorder(dark)}` }}>
               <Pips score={imp.score} color={imp.color} empty={t.pipEmpty} size={8}/>
-              <span style={{ fontSize:9, color:imp.color, fontWeight:700, letterSpacing:"0.06em" }}>{imp.level}</span>
+              <span style={{ fontSize:13, color:imp.color, fontWeight:700, letterSpacing:"0.06em" }}>{imp.level}</span>
             </div>
           </div>
         </div>
@@ -620,7 +620,7 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
         <h1 style={{ fontSize:27, fontWeight:700, color:t.text1, margin:"0 0 5px", letterSpacing:"-0.02em", display:"flex", alignItems:"center", gap:12, fontFamily:CAL }}>
           <span style={{ fontSize:25 }}>{phase.icon}</span>{phase.title}
         </h1>
-        <p style={{ fontSize:9, color:BUI_GRAY, margin:"0 0 22px", fontFamily:CAL }}>{phase.subtitle}</p>
+        <p style={{ fontSize:15, color:BUI_GRAY, margin:"0 0 22px", fontFamily:CAL }}>{phase.subtitle}</p>
 
         {/* Progress */}
         <div style={{ marginBottom:26 }}>
@@ -641,7 +641,7 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
         {/* Tabs */}
         <div style={{ display:"flex", gap:1, marginBottom:20, borderBottom:`1px solid ${t.border}` }}>
           {["overview","configuration","outcomes","licensing"].map(tabName=>(
-            <button key={tabName} onClick={()=>setTab(tabName)} style={{ padding:"8px 20px", fontSize:9.5, border:"none", cursor:"pointer", background:"transparent", fontFamily:CAL, fontWeight:tab===tabName?700:400, color:tab===tabName?t.text1:t.text4, borderBottom:`2px solid ${tab===tabName?BUI_ORANGE:"transparent"}`, letterSpacing:"0.06em", transition:"all 0.14s", marginBottom:-1 }}>{tabName.toUpperCase()}</button>
+            <button key={tabName} onClick={()=>setTab(tabName)} style={{ padding:"8px 20px", fontSize:13, border:"none", cursor:"pointer", background:"transparent", fontFamily:CAL, fontWeight:tab===tabName?700:400, color:tab===tabName?t.text1:t.text4, borderBottom:`2px solid ${tab===tabName?BUI_ORANGE:"transparent"}`, letterSpacing:"0.06em", transition:"all 0.14s", marginBottom:-1 }}>{tabName.toUpperCase()}</button>
           ))}
         </div>
 
@@ -649,24 +649,24 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
         {tab==="overview" && (
           <div>
             <div style={{ background:phase.colorBg(dark), border:`1px solid ${phase.colorBorder(dark)}`, borderRadius:12, padding:"18px 22px", marginBottom:18 }}>
-              <p style={{ fontSize:9, color:t.text2, lineHeight:1.75, margin:0, fontFamily:CAL }}>{phase.desc}</p>
+              <p style={{ fontSize:13, color:t.text2, lineHeight:1.75, margin:0, fontFamily:CAL }}>{phase.desc}</p>
             </div>
             {phase.pilotWarning && (
               <div style={{ background:dark?"rgba(239,68,68,0.07)":"rgba(239,68,68,0.06)", border:"1px solid rgba(239,68,68,0.3)", borderLeft:"3px solid #ef4444", borderRadius:"0 10px 10px 0", padding:"14px 20px", marginBottom:18 }}>
                 <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
                   <div style={{ width:8, height:8, borderRadius:"50%", background:"#ef4444", flexShrink:0 }}/>
-                  <span style={{ fontSize:9, fontWeight:700, color:"#ef4444", letterSpacing:"0.1em" }}>IMPORTANT — PILOT COMPOSITION</span>
+                  <span style={{ fontSize:11, fontWeight:700, color:"#ef4444", letterSpacing:"0.1em" }}>IMPORTANT — PILOT COMPOSITION</span>
                 </div>
-                <p style={{ fontSize:9, color:t.text2, margin:0, lineHeight:1.65, fontFamily:CAL }}>{phase.pilotWarning}</p>
+                <p style={{ fontSize:14, color:t.text2, margin:0, lineHeight:1.65, fontFamily:CAL }}>{phase.pilotWarning}</p>
               </div>
             )}
             {phase.isPilot && (
               <div style={{ background:dark?`${phase.color}0d`:`${phase.color}08`, border:`1px dashed ${phase.color}60`, borderRadius:12, padding:"14px 20px", marginBottom:18 }}>
                 <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:8 }}>
                   <div style={{ width:8, height:8, borderRadius:"50%", background:phase.color, flexShrink:0 }}/>
-                  <span style={{ fontSize:9, fontWeight:700, color:phase.color, letterSpacing:"0.1em" }}>{phase.pilotLabel ? `ON COMPLETION: ${phase.pilotLabel.replace("CONTINUES TO ","PHASE ")}` : "ON COMPLETION: PHASE 03"}</span>
+                  <span style={{ fontSize:11, fontWeight:700, color:phase.color, letterSpacing:"0.1em" }}>{phase.pilotLabel ? `ON COMPLETION: ${phase.pilotLabel.replace("CONTINUES TO ","PHASE ")}` : "ON COMPLETION: PHASE 03"}</span>
                 </div>
-                <p style={{ fontSize:9, color:t.text3, margin:0, lineHeight:1.65, fontFamily:CAL }}>At the end of the pilot window the policy <span style={{fontWeight:700,color:t.text2}}>moves forward to phase 03 (Security Team Alerts)</span> — actions removed and scope expanded to all users. This is the confirmed entry point into the permanent maturity progression. Progression through the Educate zone follows from there.</p>
+                <p style={{ fontSize:13, color:t.text3, margin:0, lineHeight:1.65, fontFamily:CAL }}>At the end of the pilot window the policy <span style={{fontWeight:700,color:t.text2}}>moves forward to phase 03 (Security Team Alerts)</span> — actions removed and scope expanded to all users. This is the confirmed entry point into the permanent maturity progression. Progression through the Educate zone follows from there.</p>
               </div>
             )}
             <UserImpactPanel impactKey={phase.impact} dark={dark} t={t}/>
@@ -674,7 +674,7 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
               <div style={{ background:t.bgCard, border:`1px solid ${t.border}`, borderRadius:12, overflow:"hidden", marginBottom:18, boxShadow:t.shadow }}>
                 <div style={{ padding:"12px 20px", background:dark?`${phase.color}0e`:`${phase.color}08`, borderBottom:`1px solid ${phase.color}25`, display:"flex", alignItems:"center", gap:8 }}>
                   <div style={{ width:8, height:8, borderRadius:"50%", background:phase.color }}/>
-                  <span style={{ fontSize:9, fontWeight:700, color:phase.color, letterSpacing:"0.08em" }}>READY TO PROGRESS? — PEOPLE, PROCESS & TECHNOLOGY</span>
+                  <span style={{ fontSize:11, fontWeight:700, color:phase.color, letterSpacing:"0.08em" }}>READY TO PROGRESS? — PEOPLE, PROCESS & TECHNOLOGY</span>
                 </div>
                 <div style={{ padding:"14px 20px" }}>
                   <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:10 }}>
@@ -683,8 +683,8 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
                       { icon:"✓", label:"Success looks like", value:phase.nextPhase.success, color:"#10b981" },
                     ].map((item,i)=>(
                       <div key={i} style={{ padding:"10px 14px", borderRadius:8, background:dark?`${item.color}0a`:`${item.color}08`, border:`1px solid ${item.color}25` }}>
-                        <div style={{ fontSize:9, fontWeight:700, color:item.color, letterSpacing:"0.08em", marginBottom:5 }}>{item.icon} {item.label.toUpperCase()}</div>
-                        <p style={{ fontSize:9, color:t.text2, margin:0, lineHeight:1.55, fontFamily:CAL }}>{item.value}</p>
+                        <div style={{ fontSize:11, fontWeight:700, color:item.color, letterSpacing:"0.08em", marginBottom:5 }}>{item.icon} {item.label.toUpperCase()}</div>
+                        <p style={{ fontSize:14, color:t.text2, margin:0, lineHeight:1.55, fontFamily:CAL }}>{item.value}</p>
                       </div>
                     ))}
                   </div>
@@ -695,8 +695,8 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
                       { icon:"💻", label:"Technology & licensing", value:`${phase.nextPhase.technology} | ${phase.nextPhase.licensing}`, color:"#3b82f6" },
                     ].map((item,i)=>(
                       <div key={i} style={{ padding:"10px 14px", borderRadius:8, background:dark?`${item.color}0a`:`${item.color}08`, border:`1px solid ${item.color}25` }}>
-                        <div style={{ fontSize:9, fontWeight:700, color:item.color, letterSpacing:"0.08em", marginBottom:5 }}>{item.icon} {item.label.toUpperCase()}</div>
-                        <p style={{ fontSize:9, color:t.text2, margin:0, lineHeight:1.55, fontFamily:CAL }}>{item.value}</p>
+                        <div style={{ fontSize:11, fontWeight:700, color:item.color, letterSpacing:"0.08em", marginBottom:5 }}>{item.icon} {item.label.toUpperCase()}</div>
+                        <p style={{ fontSize:14, color:t.text2, margin:0, lineHeight:1.55, fontFamily:CAL }}>{item.value}</p>
                       </div>
                     ))}
                   </div>
@@ -704,8 +704,8 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
               </div>
             )}
             <div style={{ background:dark?`${BUI_ORANGE}09`:`${BUI_ORANGE}0d`, borderLeft:`3px solid ${BUI_ORANGE}`, border:`1px solid ${BUI_ORANGE}28`, borderRadius:"0 10px 10px 0", padding:"14px 20px" }}>
-              <div style={{ fontSize:9, color:BUI_ORANGE, letterSpacing:"0.1em", fontWeight:700, marginBottom:7 }}>BUI PRACTITIONER TIP</div>
-              <p style={{ fontSize:9, color:t.text3, lineHeight:1.65, margin:0, fontFamily:CAL }}>{phase.tip}</p>
+              <div style={{ fontSize:11, color:BUI_ORANGE, letterSpacing:"0.1em", fontWeight:700, marginBottom:7 }}>BUI PRACTITIONER TIP</div>
+              <p style={{ fontSize:14, color:t.text3, lineHeight:1.65, margin:0, fontFamily:CAL }}>{phase.tip}</p>
             </div>
           </div>
         )}
@@ -715,36 +715,36 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
           <div>
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:18 }}>
               <div style={{ padding:"16px 18px", borderRadius:10, background:dark?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", border:`1px solid rgba(16,185,129,0.25)`, display:"flex", flexDirection:"column", gap:8 }}>
-                <div style={{ fontSize:9, color:"#059669", letterSpacing:"0.1em", fontWeight:700 }}>BASE LICENCE REQUIRED</div>
+                <div style={{ fontSize:11, color:"#059669", letterSpacing:"0.1em", fontWeight:700 }}>BASE LICENCE REQUIRED</div>
                 <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                  <span style={{ fontSize:16, fontWeight:700, color:"#059669", fontFamily:CAL }}>M365 E3</span>
-                  <span style={{ fontSize:9, color:t.text3, fontFamily:CAL }}>or equivalent</span>
+                  <span style={{ fontSize:18, fontWeight:700, color:"#059669", fontFamily:CAL }}>M365 E3</span>
+                  <span style={{ fontSize:13, color:t.text3, fontFamily:CAL }}>or equivalent</span>
                 </div>
-                <p style={{ fontSize:9, color:t.text3, margin:0, lineHeight:1.5, fontFamily:CAL }}>Covers core DLP on Exchange, SharePoint and OneDrive, manual sensitivity labelling, and basic policy enforcement across all standard workloads.</p>
+                <p style={{ fontSize:14, color:t.text3, margin:0, lineHeight:1.5, fontFamily:CAL }}>Covers core DLP on Exchange, SharePoint and OneDrive, manual sensitivity labelling, and basic policy enforcement across all standard workloads.</p>
               </div>
               <div style={{ padding:"16px 18px", borderRadius:10, background:phase.license.addOn?`rgba(217,134,28,0.08)`:`rgba(16,185,129,0.06)`, border:`1px solid ${phase.license.addOn?"rgba(217,134,28,0.3)":"rgba(16,185,129,0.25)"}` }}>
-                <div style={{ fontSize:9, color:phase.license.addOn?BUI_ORANGE:"#059669", letterSpacing:"0.1em", fontWeight:700, marginBottom:8 }}>{phase.license.addOn?"ADD-ON REQUIRED":"NO ADD-ON REQUIRED"}</div>
+                <div style={{ fontSize:11, color:phase.license.addOn?BUI_ORANGE:"#059669", letterSpacing:"0.1em", fontWeight:700, marginBottom:8 }}>{phase.license.addOn?"ADD-ON REQUIRED":"NO ADD-ON REQUIRED"}</div>
                 {phase.license.addOn ? (
                   <>
                     <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
-                      <span style={{ fontSize:9, fontWeight:700, color:BUI_ORANGE, fontFamily:CAL }}>Microsoft Purview Suite</span>
+                      <span style={{ fontSize:11, fontWeight:700, color:BUI_ORANGE, fontFamily:CAL }}>Microsoft Purview Suite</span>
                     </div>
-                    <p style={{ fontSize:9, color:t.text4, margin:"0 0 4px", lineHeight:1.4, fontFamily:CAL }}>(formerly M365 E5 Compliance add-on, renamed October 2025)</p>
+                    <p style={{ fontSize:12, color:t.text4, margin:"0 0 4px", lineHeight:1.4, fontFamily:CAL }}>(formerly M365 E5 Compliance add-on, renamed October 2025)</p>
                   </>
                 ) : (
-                  <p style={{ fontSize:9, color:t.text3, margin:0, lineHeight:1.5, fontFamily:CAL }}>All capabilities in this phase are covered by M365 E3. No additional Purview licensing is required.</p>
+                  <p style={{ fontSize:14, color:t.text3, margin:0, lineHeight:1.5, fontFamily:CAL }}>All capabilities in this phase are covered by M365 E3. No additional Purview licensing is required.</p>
                 )}
               </div>
             </div>
 
             {phase.license.addOn && phase.license.addOnFeatures.length > 0 && (
               <div style={{ marginBottom:18 }}>
-                <div style={{ fontSize:9, color:t.text5, letterSpacing:"0.09em", fontWeight:700, marginBottom:10 }}>FEATURES REQUIRING THE PURVIEW SUITE ADD-ON AT THIS PHASE</div>
+                <div style={{ fontSize:11, color:t.text5, letterSpacing:"0.09em", fontWeight:700, marginBottom:10 }}>FEATURES REQUIRING THE PURVIEW SUITE ADD-ON AT THIS PHASE</div>
                 <div style={{ display:"flex", flexDirection:"column", gap:7 }}>
                   {phase.license.addOnFeatures.map((f,i) => (
                     <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"9px 12px", background:t.cmItem, borderRadius:8, border:`1px solid ${t.cmItemBorder}` }}>
                       <div style={{ width:8, height:8, borderRadius:"50%", background:BUI_ORANGE, flexShrink:0, marginTop:5 }}/>
-                      <span style={{ fontSize:9, color:t.text2, lineHeight:1.5, fontFamily:CAL }}>{f}</span>
+                      <span style={{ fontSize:14, color:t.text2, lineHeight:1.5, fontFamily:CAL }}>{f}</span>
                     </div>
                   ))}
                 </div>
@@ -752,11 +752,11 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
             )}
 
             <div style={{ padding:"14px 18px", borderRadius:10, background:dark?`${BUI_ORANGE}09`:`${BUI_ORANGE}0d`, border:`1px solid ${BUI_ORANGE}28`, borderLeft:`3px solid ${BUI_ORANGE}` }}>
-              <div style={{ fontSize:9, color:BUI_ORANGE, letterSpacing:"0.1em", fontWeight:700, marginBottom:7 }}>LICENSING NOTE</div>
-              <p style={{ fontSize:9, color:t.text3, margin:0, lineHeight:1.65, fontFamily:CAL }}>{phase.license.note}</p>
+              <div style={{ fontSize:13, color:BUI_ORANGE, letterSpacing:"0.1em", fontWeight:700, marginBottom:7 }}>LICENSING NOTE</div>
+              <p style={{ fontSize:14, color:t.text3, margin:0, lineHeight:1.65, fontFamily:CAL }}>{phase.license.note}</p>
             </div>
 
-            <div style={{ marginTop:14, padding:"12px 16px", borderRadius:10, background:t.bgCard, border:`1px solid ${t.border}`, fontSize:9, color:t.text4, lineHeight:1.55, fontFamily:CAL }}>
+            <div style={{ marginTop:14, padding:"12px 16px", borderRadius:10, background:t.bgCard, border:`1px solid ${t.border}`, fontSize:14, color:t.text4, lineHeight:1.55, fontFamily:CAL }}>
               <span style={{ fontWeight:700, color:t.text3 }}>Important: </span>
               Licensing requirements apply per user. Every user whose content is inspected or who applies, views, or receives the benefit of a policy must hold the appropriate licence. Consult Microsoft's current Purview service description or your Microsoft licensing contact for the latest guidance — licensing terms change and this guidance reflects the position as of early 2025.
             </div>
@@ -767,20 +767,20 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
         {tab==="configuration" && (
           <div>
             <div style={{ background:t.bgCard, border:`1px solid ${t.border}`, borderRadius:12, overflow:"hidden", marginBottom:14, boxShadow:t.shadow }}>
-              <div style={{ padding:"11px 20px", background:dark?"rgba(255,255,255,0.025)":"rgba(0,0,0,0.02)", borderBottom:`1px solid ${t.border}`, display:"flex", justifyContent:"space-between", fontSize:9, color:t.text5, letterSpacing:"0.1em", fontWeight:700 }}>
+              <div style={{ padding:"11px 20px", background:dark?"rgba(255,255,255,0.025)":"rgba(0,0,0,0.02)", borderBottom:`1px solid ${t.border}`, display:"flex", justifyContent:"space-between", fontSize:13, color:t.text5, letterSpacing:"0.1em", fontWeight:700 }}>
                 <span>SETTING</span><span>VALUE</span>
               </div>
               {phase.config.map(([k,v,type],i)=>{
                 const s = badgeStyles[type]||badgeStyles.neutral;
                 return (
                   <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"13px 20px", borderBottom:i<phase.config.length-1?`1px solid ${t.borderSub}`:"none", background:i%2===1?t.bgStripe:"transparent" }}>
-                    <span style={{ fontSize:9, color:t.text3, fontFamily:CAL }}>{k}</span>
-                    <span style={{ fontSize:9, padding:"4px 12px", borderRadius:6, background:s.bg, color:s.color, border:`1px solid ${s.border}`, fontFamily:CAL, fontWeight:600 }}>{v}</span>
+                    <span style={{ fontSize:13, color:t.text3, fontFamily:CAL }}>{k}</span>
+                    <span style={{ fontSize:13, padding:"4px 12px", borderRadius:6, background:s.bg, color:s.color, border:`1px solid ${s.border}`, fontFamily:CAL, fontWeight:600 }}>{v}</span>
                   </div>
                 );
               })}
             </div>
-            <div style={{ padding:"12px 16px", background:`${BUI_ORANGE}08`, border:`1px solid ${BUI_ORANGE}22`, borderRadius:10, fontSize:9.5, color:t.noteText, fontFamily:CAL, lineHeight:1.55 }}>
+            <div style={{ padding:"12px 16px", background:`${BUI_ORANGE}08`, border:`1px solid ${BUI_ORANGE}22`, borderRadius:10, fontSize:13, color:t.noteText, fontFamily:CAL, lineHeight:1.55 }}>
               <span style={{ color:BUI_ORANGE, fontWeight:700 }}>NOTE: </span>
               Configuration shown represents the recommended settings for this maturity phase. Adapt to your organisation's risk appetite and data classification taxonomy.
             </div>
@@ -794,31 +794,31 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
               {phase.outcomes.map((o,i)=>(
                 <div key={i} style={{ padding:"15px 18px", borderRadius:10, background:dark?`${phase.color}08`:`${phase.color}09`, border:`1px solid ${phase.color}22`, display:"flex", alignItems:"flex-start", gap:11, boxShadow:t.shadow }}>
                   <div style={{ width:8, height:8, borderRadius:"50%", background:phase.color, flexShrink:0, marginTop:5 }}/>
-                  <span style={{ fontSize:9, color:t.text2, fontFamily:CAL, lineHeight:1.4 }}>{o}</span>
+                  <span style={{ fontSize:13, color:t.text2, fontFamily:CAL, lineHeight:1.4 }}>{o}</span>
                 </div>
               ))}
             </div>
             <div style={{ padding:"16px 20px", background:t.bgCard, border:`1px solid ${t.border}`, borderRadius:10, boxShadow:t.shadow }}>
-              <div style={{ fontSize:9, color:phase.zoneColor, letterSpacing:"0.1em", fontWeight:700, marginBottom:8 }}>{phase.zone} ZONE — OBJECTIVE</div>
-              <p style={{ fontSize:9, color:t.text3, margin:0, fontFamily:CAL, lineHeight:1.65 }}>{phase.zoneDesc}</p>
+              <div style={{ fontSize:13, color:phase.zoneColor, letterSpacing:"0.1em", fontWeight:700, marginBottom:8 }}>{phase.zone} ZONE — OBJECTIVE</div>
+              <p style={{ fontSize:13, color:t.text3, margin:0, fontFamily:CAL, lineHeight:1.65 }}>{phase.zoneDesc}</p>
             </div>
           </div>
         )}
 
         {/* Nav */}
         <div style={{ display:"flex", justifyContent:"space-between", marginTop:36, paddingTop:20, borderTop:`1px solid ${t.border}` }}>
-          <button onClick={()=>nav(-1)} disabled={active===0} style={{ padding:"10px 22px", fontSize:9, borderRadius:8, fontFamily:CAL, border:`1px solid ${t.border}`, background:"transparent", color:active===0?t.textMuted:t.text3, cursor:active===0?"not-allowed":"pointer", letterSpacing:"0.06em", fontWeight:600, transition:"all 0.14s" }}>← PREVIOUS</button>
+          <button onClick={()=>nav(-1)} disabled={active===0} style={{ padding:"10px 22px", fontSize:13, borderRadius:8, fontFamily:CAL, border:`1px solid ${t.border}`, background:"transparent", color:active===0?t.textMuted:t.text3, cursor:active===0?"not-allowed":"pointer", letterSpacing:"0.06em", fontWeight:600, transition:"all 0.14s" }}>← PREVIOUS</button>
           <div style={{ display:"flex", gap:6, alignSelf:"center" }}>
             {phases.map((_,i)=>(
               <div key={i} onClick={()=>{setActive(i);setTab("overview");}} style={{ width:i===active?20:6, height:6, borderRadius:3, background:i===active?BUI_ORANGE:t.pipEmpty, cursor:"pointer", transition:"all 0.2s" }}/>
             ))}
           </div>
-          <button onClick={()=>nav(1)} disabled={active===total-1} style={{ padding:"10px 22px", fontSize:9, borderRadius:8, fontFamily:CAL, border:`1px solid ${active===total-1?t.border:BUI_ORANGE+"55"}`, background:active===total-1?"transparent":`${BUI_ORANGE}18`, color:active===total-1?t.textMuted:BUI_ORANGE, cursor:active===total-1?"not-allowed":"pointer", letterSpacing:"0.06em", fontWeight:700, transition:"all 0.14s" }}>NEXT →</button>
+          <button onClick={()=>nav(1)} disabled={active===total-1} style={{ padding:"10px 22px", fontSize:13, borderRadius:8, fontFamily:CAL, border:`1px solid ${active===total-1?t.border:BUI_ORANGE+"55"}`, background:active===total-1?"transparent":`${BUI_ORANGE}18`, color:active===total-1?t.textMuted:BUI_ORANGE, cursor:active===total-1?"not-allowed":"pointer", letterSpacing:"0.06em", fontWeight:700, transition:"all 0.14s" }}>NEXT →</button>
         </div>
 
         <div style={{ marginTop:32, paddingTop:14, borderTop:`1px solid ${t.borderSub}`, display:"flex", justifyContent:"space-between" }}>
-          <span style={{ fontSize:9, color:t.textMuted, letterSpacing:"0.06em" }}>BUI · INNOVATION™ DELIVERY RESULTS</span>
-          <span style={{ fontSize:9, color:t.textMuted }}>Microsoft Purview Maturity Framework</span>
+          <span style={{ fontSize:13, color:t.textMuted, letterSpacing:"0.06em" }}>BUI · INNOVATION™ DELIVERY RESULTS</span>
+          <span style={{ fontSize:13, color:t.textMuted }}>Microsoft Purview Maturity Framework</span>
         </div>
       </main>
     </div>
@@ -858,26 +858,26 @@ export default function App() {
             ))}
             <div style={{ marginLeft:11, lineHeight:1.35 }}>
               {["INNOVATION™","DELIVERY","RESULTS"].map(txt=>(
-                <div key={txt} style={{ fontSize:9, color:BUI_GRAY, letterSpacing:"0.12em" }}>{txt}</div>
+                <div key={txt} style={{ fontSize:13, color:BUI_GRAY, letterSpacing:"0.12em" }}>{txt}</div>
               ))}
             </div>
           </div>
           <div style={{ width:1, height:26, background:t.border }}/>
           <div>
-            <div style={{ fontSize:9, fontWeight:700, color:t.text1 }}>Microsoft Purview</div>
-            <div style={{ fontSize:9, color:BUI_GRAY, letterSpacing:"0.08em" }}>{view==="roadmap"?"ADOPTION ROADMAP":"MATURITY FRAMEWORK"}</div>
+            <div style={{ fontSize:11, fontWeight:700, color:t.text1 }}>Microsoft Purview</div>
+            <div style={{ fontSize:13, color:BUI_GRAY, letterSpacing:"0.08em" }}>{view==="roadmap"?"ADOPTION ROADMAP":"MATURITY FRAMEWORK"}</div>
           </div>
           <div style={{ width:1, height:26, background:t.border }}/>
           {/* Track switcher */}
           <nav style={{ display:"flex", gap:2 }}>
             {navItems.map(n=>(
-              <button key={n.id} onClick={()=>setView(n.id)} style={{ padding:"6px 18px", fontSize:9, borderRadius:8, border:"none", cursor:"pointer", background: view===n.id?`${BUI_ORANGE}18`:"transparent", color: view===n.id?BUI_ORANGE:t.text4, fontFamily:CAL, fontWeight: view===n.id?700:400, transition:"all 0.14s", borderBottom: view===n.id?`2px solid ${BUI_ORANGE}`:"2px solid transparent" }}>{n.label}</button>
+              <button key={n.id} onClick={()=>setView(n.id)} style={{ padding:"6px 18px", fontSize:15, borderRadius:8, border:"none", cursor:"pointer", background: view===n.id?`${BUI_ORANGE}18`:"transparent", color: view===n.id?BUI_ORANGE:t.text4, fontFamily:CAL, fontWeight: view===n.id?700:400, transition:"all 0.14s", borderBottom: view===n.id?`2px solid ${BUI_ORANGE}`:"2px solid transparent" }}>{n.label}</button>
             ))}
           </nav>
         </div>
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           {zones.map(z=>(
-            <div key={z.name} style={{ fontSize:9, padding:"3px 10px", borderRadius:99, border:`1px solid ${z.color}35`, color:z.color, background:`${z.color}0d`, letterSpacing:"0.1em", fontWeight:700 }}>{z.name}</div>
+            <div key={z.name} style={{ fontSize:12, padding:"3px 10px", borderRadius:99, border:`1px solid ${z.color}35`, color:z.color, background:`${z.color}0d`, letterSpacing:"0.1em", fontWeight:700 }}>{z.name}</div>
           ))}
           <div style={{ width:1, height:22, background:t.border, margin:"0 4px" }}/>
           <ThemeToggle dark={dark} onToggle={()=>setDark(d=>!d)} t={t}/>
