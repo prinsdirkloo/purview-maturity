@@ -1,5 +1,4 @@
 import { useState, useRef, useMemo } from "react";
-const React = { useRef };
 
 const BUI_ORANGE = "#D9861C";
 const BUI_GRAY   = "#535657";
@@ -49,7 +48,7 @@ const dlpPhases = [
     desc:"Create complete DLP policies with all conditions, exceptions, and actions — but run them in simulation mode only. No user-facing actions occur. Validate policy logic, tune match accuracy, and understand your data exposure landscape before committing anything live.",
     config:[["Policy Mode","Simulation","neutral"],["Actions","None (simulated only)","off"],["Policy Tips","Off","off"],["User Notifications","Off","off"],["Incident Reports","Admin review only","active"]],
     outcomes:["Baseline data inventory","False positive identification","Scope validation","Zero user impact"],
-    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Core DLP simulation is included in M365 E3 across Exchange, SharePoint, and OneDrive.' },
+    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Simulation mode is fully covered by M365 E3 across Exchange, SharePoint, and OneDrive. No add-on is required to build, test, and tune policies in simulation. This is the right phase to validate scope before any licensing upgrade conversation.' },
     zoneDesc:"Build a comprehensive evidence base about your data landscape and policy behaviour before exposing any user-facing controls.", nextPhase:{ time:'2–4 weeks minimum', success:'False positive rate is understood and documented; matched items reviewed; conditions tuned; no unexpected high-volume matches remain unexplained', people:'DLP admin reviews report; security team aligned on scope; relevant business stakeholders briefed on what was found', process:'Produce a simulation findings report; document any policies that need condition changes before going live; get sign-off from security lead', technology:'Review DLP match activity in Purview portal; tune confidence thresholds and instance counts; validate all intended workloads are in scope', licensing:'No change — M365 E3 covers this phase', skip:false },
     tip:"Run simulation for a minimum of 2–4 weeks. Use Purview DLP reports to review matched items, refine conditions (confidence thresholds, instance counts), and document expected vs unexpected matches before progressing." },
   { num:"02", zone:"DISCOVER", zoneColor:"#059669", color:"#059669",
@@ -60,7 +59,7 @@ const dlpPhases = [
     desc:"After Simulation Mode (phase 01) has provided enough data to tune and validate policy conditions, a time-boxed Enforcement Pilot activates hard block rules for a small, named, consenting group — typically 10–25 users from a single department. The purpose is to prove that policies work correctly under real enforcement conditions, that analysts can handle the alert and incident volume, and that the helpdesk escalation path functions end-to-end. On completion the policy transitions to Security Team Alerts (phase 03) for all users — actions are removed, scope expands to everyone, and the permanent maturity progression begins. This Enforcement Pilot is specific to DLP. The Sensitivity Labelling track does not require an equivalent — its 'Labels Published — Pilot' (labelling phase 02) serves a different purpose: introducing the label taxonomy for familiarity rather than validating blocking behaviour.",
     config:[["Policy Mode","Active — pilot scope only","warn"],["Actions","Hard block — pilot group","warn"],["Policy Tips","On — pilot group only","active"],["User Notifications","On — pilot group only","active"],["All Other Users","Security Team Alerts (audit mode)","active"],["Next Phase","Transitions to phase 03 (Security Team Alerts)","active"],["Pilot Duration","2–4 weeks (time-boxed)","neutral"],["Pilot Scope","Named consenting group (10–25 users)","neutral"]],
     outcomes:["Production policy validation","Analyst & helpdesk readiness confirmed","Blocking behaviour verified","Exit criteria assessed","Progresses to phase 03 (Security Team Alerts) on completion"],
-    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'The Enforcement Pilot uses core DLP blocking (E3). If the pilot scope includes Teams chat messages, the Purview Suite add-on is required for that workload.' },
+    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['DLP for Teams chat messages — required if pilot scope includes Teams chat'], note:'Hard block enforcement on Exchange, SharePoint, and OneDrive is covered by M365 E3. If the pilot group communicates sensitive data via Teams chat and you want to include that workload in the pilot, the Purview Suite add-on is required. Limit the pilot to Exchange/SharePoint/OneDrive to stay within E3 if the add-on is not yet licensed.' },
     zoneDesc:"The Discover zone builds all the evidence needed before any user-facing enforcement. The pilot sits here because it is still a validation exercise — not yet permanent enforcement. Completion of the pilot is the bridge into the permanent maturity progression — phase 03 (Security Team Alerts) follows directly.",
     nextPhase:{ time:'2–4 weeks (time-boxed)', success:'Exit criteria met: false positive rate within threshold, analyst response time within SLA, no legitimate workflows broken; all pilot group issues documented and resolved; findings report produced', people:'Pilot group includes business stakeholders (not just IT); security lead and at least one business unit manager have reviewed findings; helpdesk has handled real escalations', process:'Findings report shared with stakeholders; any false positives addressed before progressing; formal sign-off obtained from security lead and executive sponsor', technology:'Confirm policy conditions are correct across all intended workloads; verify alert routing and incident workflow function end-to-end', licensing:'M365 E3 for Exchange/SharePoint/OneDrive pilot scope. Purview Suite add-on required if Teams chat is included', skip:false },
     tip:"Define exit criteria before the pilot starts — not after. Typical criteria: fewer than X false positives per day, analyst response time under Y minutes, no legitimate business workflows broken. If exit criteria are not met, extend the pilot window and re-tune. On successful completion, move forward to phase 03 (Security Team Alerts) and begin the formal Educate zone progression.",
@@ -69,37 +68,44 @@ const dlpPhases = [
     desc:"Following a successful Enforcement Pilot (phase 02), the programme moves forward to this phase — actions removed, scope expanded to all users. Analysts receive real-time alerts when policy conditions are triggered, but users see nothing. This is the confirmed starting point for the permanent maturity progression: the pilot has validated that blocking works, now the organisation builds the analyst readiness and change management foundation before enforcement is introduced more broadly.",
     config:[["Policy Mode","Active","active"],["Actions","None","off"],["Admin Notifications","On — DLP/SOC team","active"],["Policy Tips","Off","off"],["User Notifications","Off","off"]],
     outcomes:["SOC triage readiness","Analyst playbook validation","Escalation path testing","Zero user impact"],
-    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['DLP for Teams chat messages', 'Advanced policy tips (advanced classifiers, oversharing dialog)', 'Advanced Sensitive Information Types (trainable classifiers)'], note:'Core policy tips on Exchange, SharePoint, and OneDrive are included in M365 E3. The Purview Suite add-on is required if scope includes Teams chat, advanced classifiers, or the oversharing dialog.' },
+    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Routing DLP alerts to the security team is fully covered by M365 E3. Alert policies, incident reports, and the DLP alert dashboard in the Purview portal are all E3 capabilities. No add-on is needed to build analyst readiness at this phase.' },
     zoneDesc:"Build a comprehensive evidence base about your data landscape and policy behaviour before exposing any user-facing controls.", nextPhase:{ time:'2–4 weeks', success:'Alert volume is manageable; analysts can triage within agreed SLA; no high false-positive rate; helpdesk briefed and ready; user communications drafted for Policy Tips', people:'SOC/DLP analyst team comfortable with alert queue; helpdesk manager briefed; HR and Communications have reviewed user-facing messaging', process:'Document triage workflow and escalation path; establish a false positive register; define override justification expectations for the next phase', technology:'Verify alert routing is working correctly; confirm DLP reports are accessible to the right people; check Teams chat scoping if applicable', licensing:'No change for core workloads — M365 E3. If Teams chat alerts are in scope, Purview Suite add-on required', skip:false },
     tip:"After the pilot completes and this phase begins, give analysts 2–4 weeks before progressing. Use the time to review the full alert volume across all users, tune any conditions that generated noise during the pilot, and begin drafting user communications for Policy Tips." },
   { num:"04", zone:"EDUCATE", zoneColor:BUI_ORANGE, color:BUI_ORANGE, colorBg:(d)=>d?"rgba(217,134,28,0.07)":"rgba(217,134,28,0.06)", colorBorder:(d)=>d?"rgba(217,134,28,0.2)":"rgba(217,134,28,0.25)", title:"Policy Tips", subtitle:"Contextual guidance at the moment of risk", icon:"💡", impact:"moderate",
     desc:"Activate policy tips so users receive an in-app notification when they're about to trigger a policy — attaching a file in Teams, uploading to SharePoint, drafting a sensitive email. The action is not blocked. This is the first visible signal to end users and the most important change management milestone.",
     config:[["Policy Mode","Active","active"],["Actions","None","off"],["Admin Notifications","On","active"],["Policy Tips","On — informational","active"],["User Override","Optional (with or without justification)","neutral"]],
     outcomes:["User awareness","Behaviour change signal","Override data collection","Low friction"],
-    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['DLP for Teams chat messages', 'Endpoint DLP (devices, USB, print blocking)', 'Advanced classifiers in soft block conditions'], note:'Soft block on Exchange, SharePoint, and OneDrive is included in M365 E3. The Purview Suite add-on is required for Teams chat soft blocks, Endpoint DLP, and conditions using trainable classifiers.' },
+    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['DLP policy tips in Microsoft Teams chat messages','Oversharing dialog in Outlook (shows recipients before sending)','Trainable classifiers as policy tip conditions (beyond built-in SITs)'], note:'Policy tips on Exchange, SharePoint, and OneDrive are covered by M365 E3. The Purview Suite add-on is required specifically for: (1) policy tips appearing inside Teams chat messages, (2) the Outlook oversharing dialog that warns before external sends, and (3) any policy tip condition using trainable classifiers rather than standard SITs.' },
     zoneDesc:"Drive behavioural change through awareness and accountability. Friction should be proportional and explainable.", nextPhase:{ time:'4–8 weeks', success:'Policy tip volume is understood; override justification data is being collected and reviewed; no major user confusion; helpdesk query volume has stabilised; false positive rate is below agreed threshold', people:'Business unit champions have been identified; line managers briefed; HR and Communications sign-off on soft block messaging', process:'Analyse override justifications from this phase — high override rates signal a policy tuning need before soft blocking; prepare a soft block communication plan; test the justification UX with a sample group', technology:'Review policy tip match data in DLP reports; tune any conditions generating excessive tips; ensure justification capture is configured', licensing:'No change if limited to Exchange/SharePoint/OneDrive (M365 E3). Purview Suite add-on required for Teams chat tips and advanced classifiers', skip:false },
     tip:"Require business justifications on overrides even at this non-blocking stage. The justification data reveals whether conditions are correct, which users need training, and which violations are legitimate needs." },
   { num:"05", zone:"EDUCATE", zoneColor:BUI_ORANGE, color:BUI_ORANGE, colorBg:(d)=>d?"rgba(217,134,28,0.07)":"rgba(217,134,28,0.06)", colorBorder:(d)=>d?"rgba(217,134,28,0.2)":"rgba(217,134,28,0.25)", title:"Soft Block", subtitle:"Action paused — user can proceed with justification", icon:"⚠️", impact:"elevated",
     desc:"The risky action is interrupted and the user must provide a written business justification before proceeding. The action is not permanently denied — the user retains control — but every override is logged with their rationale. This delivers maximum behavioural change while still respecting user autonomy.",
     config:[["Policy Mode","Active","active"],["Actions","Restrict / soft block","warn"],["Admin Notifications","On","active"],["Policy Tips","On","active"],["User Override","Allowed with mandatory justification","warn"]],
     outcomes:["Accountability culture","Friction-driven awareness","Documented override audit trail","Moderate enforcement"],
-    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['DLP for Teams chat messages', 'Endpoint DLP (devices, USB, print blocking)', 'Label-conditioned DLP hard blocks (requires Purview Suite for labelling track)'], note:'Hard block on Exchange, SharePoint, and OneDrive is included in M365 E3. The Purview Suite add-on is required for Teams chat, Endpoint DLP, and label-conditioned policies (which rely on the labelling track that requires the add-on for encryption).' },
+    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['Soft block (justify-to-proceed) on Teams chat messages','Endpoint DLP — USB copy prevention, print blocking, clipboard restrictions on managed devices','Trainable classifiers as soft block conditions'], note:'Justify-to-proceed soft blocks on Exchange, SharePoint, and OneDrive are covered by M365 E3. The Purview Suite add-on is required to extend soft blocks to Teams chat, to apply Endpoint DLP actions on managed devices, and to use trainable classifiers (rather than standard SITs) as the condition that triggers the soft block.' },
     zoneDesc:"Drive behavioural change through awareness and accountability. Friction should be proportional and explainable.", nextPhase:{ time:'4–12 weeks — do not rush', success:'Override justification quality is high; false positive rate is at or below threshold; no legitimate business workflows are being blocked; exception process is functioning; exec sponsor confirmed; analysts ready for hard block incident volume', people:'Executive sponsor confirmed and briefed; legal and compliance team aligned on hard block scope; helpdesk trained on hard block escalation with agreed SLA', process:'Define the exact scope of hard block policies (which labels/SITs, which workloads) — do not apply broadly; establish formal exception approval workflow; define rollback process', technology:'Validate label-conditioned DLP is available if needed; confirm Endpoint DLP is licensed and configured if devices are in scope; run a final false positive check on all conditions', licensing:'Hard block on Exchange/SharePoint/OneDrive is M365 E3. Teams chat hard block, Endpoint DLP, and label-conditioned policies require Purview Suite add-on', skip:false },
     tip:"Analyse override justifications regularly. High override rates on specific rules often indicate a legitimate business exception — tune the policy rather than forcing repeated overrides." },
   { num:"06", zone:"ENFORCE", zoneColor:"#ef4444", color:"#ef4444", colorBg:(d)=>d?"rgba(239,68,68,0.07)":"rgba(239,68,68,0.06)", colorBorder:(d)=>d?"rgba(239,68,68,0.2)":"rgba(239,68,68,0.25)", title:"Hard Block", subtitle:"Action denied — no override possible", icon:"🚫", impact:"high",
     desc:"The highest enforcement level. The action is blocked entirely and the user cannot override. Reserved for the most sensitive data classifications — highly confidential, regulated PII, financial data under compliance mandates — or repeat violators. Only apply to conditions with very high confidence and low false positive rates.",
     config:[["Policy Mode","Active","active"],["Actions","Block — no override","danger"],["Admin Notifications","On","active"],["Policy Tips","On — explains why blocked","active"],["User Override","Not allowed","danger"]],
     outcomes:["Regulatory compliance posture","Zero data exfiltration path","Maximum enforcement","Helpdesk escalation required"],
-    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['Content Explorer and Activity Explorer (data classification analytics)', 'Advanced audit log retention (180+ days requires Audit Premium)'], note:'Policy governance and basic audit are included in M365 E3. The Purview Suite add-on unlocks Content Explorer, Activity Explorer, and Audit (Premium) for extended log retention and high-value event coverage.' },
+    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['Hard block on Teams chat messages','Endpoint DLP — block file copy to USB, prevent print and upload on managed devices','Label-conditioned hard block policies (e.g. block Highly Confidential files from leaving the organisation)'], note:'Hard block on Exchange, SharePoint, and OneDrive is covered by M365 E3. The Purview Suite add-on is required to hard-block Teams chat messages, to enforce Endpoint DLP device restrictions, and to configure hard blocks conditioned on sensitivity labels (which themselves require the add-on for encryption).' },
     zoneDesc:"Apply hard controls only to the highest-risk classifications where consequences outweigh disruption. This zone is earned, not assumed.", nextPhase:{ time:'Ongoing — no fixed duration', success:'False positive rate remains below threshold; exception volumes are manageable; no shadow IT behaviour emerging; DLP programme is aligned with sensitivity labelling track', people:'Named policy owners in security and each business unit; regular DLP steering group meeting; label taxonomy owner aligned', process:'Quarterly policy review cadence; exception lifecycle management; stale policy retirement process; feedback loop between DLP incidents and label taxonomy', technology:'Content Explorer and Activity Explorer for analytics (requires Purview Suite); auto-labelling alignment when labelling track matures; consider Insider Risk Management integration', licensing:'Governance tooling (Content Explorer, Activity Explorer, Audit Premium) requires Purview Suite add-on if not already licensed', skip:false },
     tip:"Always provide a clear escalation path for legitimate exceptions. Hard blocks with no exception path erode trust and generate shadow IT. Scope by sensitivity label, not broad content conditions." },
-  { num:"07", zone:"GOVERN", zoneColor:BUI_GRAY, color:BUI_GRAY, colorBg:(d)=>d?"rgba(83,86,87,0.07)":"rgba(83,86,87,0.06)", colorBorder:(d)=>d?"rgba(83,86,87,0.2)":"rgba(83,86,87,0.25)", title:"Continuous Improvement", subtitle:"Tuning, exception management & policy lifecycle", icon:"♻️", impact:"minimal",
+  { num:"07", zone:"ENFORCE", zoneColor:"#ef4444", color:"#ef4444", colorBg:(d)=>d?"rgba(239,68,68,0.07)":"rgba(239,68,68,0.06)", colorBorder:(d)=>d?"rgba(239,68,68,0.2)":"rgba(239,68,68,0.25)", title:"Adaptive Protection", subtitle:"DLP policies dynamically tighten based on IRM risk scores", icon:"🛡️", impact:"moderate",
+    desc:"Adaptive Protection connects Insider Risk Management signals to DLP policy enforcement. A user flagged as elevated risk by IRM automatically receives stricter DLP controls — a soft block becomes a hard block, a policy tip becomes a soft block — without any policy change or manual intervention. This is the convergence point between the IRM and DLP tracks. Requires IRM to be at phase 05 (Adaptive Protection Activated) or above.",
+    config:[["Adaptive Protection","Active","active"],["IRM Integration","Risk scores feed DLP","active"],["Elevated Risk Users","Hard block automatically applied","danger"],["Minor Risk Users","Soft block automatically applied","warn"],["Low Risk Users","Standard DLP policy applies","neutral"],["Scope","All workloads covered by DLP","active"]],
+    outcomes:["Dynamic risk-based enforcement","Automated tightening for high-risk users","No policy changes required at runtime","IRM and DLP programme convergence"],
+    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['Adaptive Protection in Microsoft Purview DLP — dynamic policy tightening based on IRM risk level','Insider Risk Management (required signal source — IRM must be active and generating risk scores)','Dynamic DLP enforcement: Elevated risk → Hard block, Minor risk → Soft block, Low risk → Standard policy'], note:'Adaptive Protection requires the Purview Suite add-on for every user subject to dynamic enforcement. It cannot function without an active IRM deployment — IRM must be generating accurate risk scores before Adaptive Protection is enabled. This is a Purview Suite-only capability with no E3 equivalent. Ensure all in-scope users are licensed before activation.' },
+    zoneDesc:"Adaptive Protection sits in the ENFORCE zone because it is active enforcement — not governance. It dynamically applies hard controls to users whose behaviour signals elevated risk. This is the ENFORCE zone capability that requires both DLP and IRM to be mature.", nextPhase:{ skip:true },
+    tip:"Do not activate Adaptive Protection until your IRM deployment has been running long enough to generate reliable risk signals — typically IRM phase 03 or above. False positives in IRM risk scoring will cascade into false DLP enforcement. Treat IRM accuracy as a prerequisite, not an assumption." },  { num:"08", zone:"GOVERN", zoneColor:BUI_GRAY, color:BUI_GRAY, colorBg:(d)=>d?"rgba(83,86,87,0.07)":"rgba(83,86,87,0.06)", colorBorder:(d)=>d?"rgba(83,86,87,0.2)":"rgba(83,86,87,0.25)", title:"Continuous Improvement", subtitle:"Tuning, exception management & policy lifecycle", icon:"♻️", impact:"minimal",
     desc:"DLP is not a set-and-forget control. Establish a regular review cadence: revisit false positive rates, retire outdated policies, promote simulation-mode policies for new data types, and align scope with evolving sensitivity labels and your information architecture.",
     config:[["Review Cadence","Monthly / quarterly","neutral"],["False Positive Target","Define and track a threshold","neutral"],["Exception Management","Formal approval workflow","active"],["Label Alignment","Sensitivity labels ↔ policy rules","active"],["Policy Ownership","Named business + security owners","active"]],
     outcomes:["Policy health reviews","Exception lifecycle management","Label-to-policy alignment","Adaptive risk posture"],
-    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Continuous improvement governance does not require additional licensing beyond what is already in place for the active enforcement phases.' },
-    zoneDesc:"Sustain the programme through structured ownership, regular review cycles, and a feedback loop between incidents and policy design.", nextPhase:{ skip:true },
+    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['Content Explorer — view where sensitive data lives across Exchange, SharePoint, OneDrive','Activity Explorer — audit trail of labelling and DLP policy match activity','Audit (Premium) — extended log retention beyond 90 days and high-value forensic events'], note:'Policy review, tuning, and exception management are covered by M365 E3. However, the analytics tools that make governance meaningful — Content Explorer, Activity Explorer, and Audit (Premium) — all require the Purview Suite add-on. If those tools are not yet licensed, governance relies on basic DLP reports only.' },
+    zoneDesc:"Sustain the programme through structured ownership, regular review cycles, and a feedback loop between incidents and policy design.", nextPhase:{ time:'Ongoing — runs after phase 07 (Adaptive Protection)', success:'Adaptive Protection policies active; IRM risk scores are dynamically tightening DLP controls; elevated-risk users automatically receive stricter enforcement without manual policy changes', people:'IRM programme owner and DLP policy owner aligned; legal and HR signed off on Adaptive Protection scope; helpdesk briefed on dynamic enforcement changes', process:'Adaptive Protection scope documented; risk level thresholds defined (Elevated vs Minor vs Low); regular review of how many users are in each risk band', technology:'IRM must be at phase 05 or above; Adaptive Protection configured in Microsoft Purview Insider Risk Management settings; DLP policies linked to IRM risk levels', licensing:'Purview Suite add-on required for both IRM (signal source) and Adaptive Protection (DLP feature). Both the IRM and DLP tracks must be at Purview Suite licensing tier.', skip:true },
     tip:"Feed override justifications and incident data back into your sensitivity labelling taxonomy. High-frequency violations often signal a labelling gap — not just an enforcement gap." },
+
 ];
 
 // ── SENSITIVITY LABELLING PHASES ──────────────────────────────────────────────
@@ -108,7 +114,7 @@ const labelPhases = [
     desc:"Before publishing a single label, run MIP Scanner (or Purview data discovery) across your on-premises and cloud repositories to understand what sensitive data you actually have. Use this to design your label taxonomy — typically 3–5 labels (Public → General → Confidential → Highly Confidential, optionally with sub-labels). Don't publish anything yet.",
     config:[["Labels Published","No","off"],["MIP Scanner","Active — discovery mode","active"],["User Visibility","None","off"],["Purview Analytics","On — data mapping","active"],["Taxonomy Design","In progress","neutral"]],
     outcomes:["Sensitive data inventory","Taxonomy design validated","Stakeholder alignment on labels","Zero user impact"],
-    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'MIP Scanner for on-premises discovery is included with M365 E3 (requires AIP Unified Labelling client). Cloud data discovery through Purview uses E3 licensing.' },
+    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Data discovery and taxonomy design are fully covered by M365 E3. MIP Scanner (for on-premises file shares and SharePoint on-prem) is included with E3 but requires the AIP Unified Labelling client to be deployed. Purview data classification and Content Explorer for initial data mapping require the Purview Suite add-on — if not yet licensed, use MIP Scanner and manual inventory methods for the discovery phase.' },
     zoneDesc:"Build a data map before designing labels. The taxonomy you choose here is load-bearing — changing it retroactively after millions of files are labelled is painful.", nextPhase:{ time:'4–8 weeks', success:'Label taxonomy documented and agreed; MIP Scanner completed across all in-scope repositories; sensitive data inventory available; taxonomy validated with at least 3–4 non-IT business representatives', people:'Information security lead, legal, HR, finance and at least one executive sponsor must have reviewed and agreed the label names and definitions', process:'Taxonomy sign-off document produced; label descriptions written in plain language (not technical language); pilot group identified for phase 02', technology:'MIP Scanner deployed and completed; AIP Unified Labelling client deployed to pilot group endpoints', licensing:'M365 E3 covers this phase', skip:false },
     tip:"Most organisations design too many labels. Aim for 3–5 at the top level, with sub-labels only where there is a genuine functional difference in how the data should be handled. Complexity in the taxonomy directly causes user confusion at the point of labelling." },
   { num:"02", zone:"DISCOVER", zoneColor:"#059669", color:"#059669",
@@ -119,7 +125,7 @@ const labelPhases = [
     desc:"Publish the label taxonomy to a pilot group with no mandatory application, no default label, and no protection actions. Users can see and apply labels manually but nothing enforces it. This phase is purely about familiarity — letting users encounter labels in the ribbon without any friction or consequence. On completion the programme continues to Default Label Applied (phase 03) for all users.",
     config:[["Labels Published","Yes — pilot group","active"],["Default Label","None","off"],["Mandatory Labelling","Off","off"],["Protection Actions","None","off"],["Scope","Pilot group only","neutral"],["Next Phase","Continues to phase 03 (Default Label Applied)","active"]],
     outcomes:["Organic adoption baseline","User familiarity with label names","Voluntary application data","Taxonomy validation","Continues to phase 03 on completion"],
-    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Publishing labels to a pilot group and enabling manual application is included in M365 E3.' },
+    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Publishing the label taxonomy to a pilot group and enabling manual application in Office apps, Outlook, SharePoint, and Teams is fully covered by M365 E3. No add-on is required for this phase. This is intentional — the pilot should be achievable within existing licensing so that the taxonomy can be validated before any licence upgrade is required.' },
     zoneDesc:"Build familiarity with the label taxonomy before any enforcement. Get the taxonomy right before introducing any friction.",
     pilotWarning:"A common mistake is to pilot sensitivity labels only with IT staff or the security team. IT users are comfortable with classification concepts and rarely reflect how the broader organisation will behave. A meaningful label pilot must include people from finance, HR, legal, operations, and executive assistants — the roles that handle the most sensitive content every day. Watch which labels confuse them, which ones they skip, and which taxonomy names prompt questions. If a label name needs explaining, it needs renaming. The goal of this phase is not to prove that labels work technically — it is to prove that your taxonomy is intuitive enough for every type of user in your organisation.",
     nextPhase:{ time:'2–4 weeks', success:'Pilot users have encountered and voluntarily applied labels; taxonomy confusion points identified; no label names need renaming based on user feedback; organic adoption data collected', people:'Pilot group feedback collated (must include non-IT users); taxonomy owner reviewed feedback; comms plan for default label drafted', process:'Document which labels users found confusing; make any taxonomy changes before expanding; communicate the default label to all users', technology:'Review label usage analytics in Purview; confirm label policy is publishing correctly to all pilot endpoints and web apps', licensing:'M365 E3 covers this phase', skip:false },
@@ -128,45 +134,98 @@ const labelPhases = [
     desc:"Configure a default label (typically 'General') that is automatically applied to new documents and emails. No encryption, no mandatory classification beyond the default. Users see the label but can change it freely. This is the first moment labels become part of every user's experience.",
     config:[["Labels Published","Yes — all users","active"],["Default Label","General (auto-applied)","active"],["Mandatory Labelling","Off","off"],["Protection Actions","None","off"],["User Override","Free — no justification required","neutral"]],
     outcomes:["Universal label visibility","Default classification baseline","Change management entry point","Users aware labels exist"],
-    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Applying a default label to new content is included in M365 E3 for Exchange and Office apps. Setting a default sensitivity label on a SharePoint document library requires M365 E3 or above.' },
+    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Applying a default sensitivity label to new documents and emails is covered by M365 E3. This applies to Outlook (email default), Office apps (document default), and SharePoint document libraries (library-level default label setting). No add-on is required. The default label is a label policy setting — it does not require automatic labelling or content inspection, which are add-on capabilities.' },
     zoneDesc:"Introduce labels into the daily experience without forcing decisions. The default label means every file has a starting classification without user action.", nextPhase:{ time:'2–4 weeks', success:'Default label is applied consistently to new content; users understand what it means; no significant confusion or helpdesk spike; label analytics show the default label is appearing as expected', people:'All users communicated to before activation; helpdesk briefed; line managers aware', process:'Monitor helpdesk queries for label confusion; review label analytics weekly; prepare recommendation comms', technology:'Verify default label is applying in Outlook, Word, Excel, SharePoint; check mobile app behaviour', licensing:'M365 E3 covers this phase', skip:false },
     tip:"Communicate the default label clearly before you turn it on. Users will notice the label appearing on their files and emails — frame this as 'we've given everything a starting classification' rather than letting them discover it unexpectedly." },
   { num:"04", zone:"EDUCATE", zoneColor:BUI_ORANGE, color:BUI_ORANGE, colorBg:(d)=>d?"rgba(217,134,28,0.07)":"rgba(217,134,28,0.06)", colorBorder:(d)=>d?"rgba(217,134,28,0.2)":"rgba(217,134,28,0.25)", title:"Recommended Labelling", subtitle:"Client-side suggestions based on content — dismissible", icon:"💡", impact:"moderate",
     desc:"Enable label recommendations — Purview analyses content and suggests a label with a tooltip but doesn't force it. Users can dismiss the recommendation. This is the sensitivity labelling equivalent of a DLP policy tip: informational, non-blocking, but the first time the system is actively talking to users about classification.",
     config:[["Recommended Labels","On — client-side","active"],["Mandatory Labelling","Off","off"],["Protection Actions","None","off"],["User Override","Dismiss without justification","neutral"],["Scope","All users","active"]],
     outcomes:["Content-aware classification nudges","User classification accuracy data","Taxonomy tuning signal","Moderate change management required"],
-    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['Client-side automatic label recommendations based on content', 'Advanced trainable classifiers for recommendation conditions'], note:'Basic manual label application is E3. Client-side label recommendations driven by content inspection (automatic labelling) require the Purview Suite add-on.' },
+    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['Client-side label recommendations — Purview inspects document content and suggests a label while the user works','Trainable classifiers as recommendation conditions (e.g. detect financial reports, HR documents, source code)'], note:'Manual label application and basic SIT-based conditions remain E3. Client-side label recommendations — where Purview analyses content in real time and suggests a label with a tooltip — require the Purview Suite add-on. If the add-on is not yet licensed, skip this phase and proceed to Mandatory Labelling (phase 05), which is E3.' },
     zoneDesc:"Drive behavioural change through guidance before enforcement. Users learn to classify through positive reinforcement rather than friction.", nextPhase:{ time:'4–6 weeks', success:'Recommendation acceptance rate is tracked and improving; mislabelling rate is understood; users are correctly overriding or accepting recommendations; taxonomy is stable with no pending changes', people:'All users aware of mandatory labelling coming; helpdesk trained on mandatory label queries; exec sponsor briefed', process:'Publish mandatory labelling communication with rationale; establish label exception/query process; define what happens when users are unsure', technology:'Configure mandatory labelling policy in Purview; test across all workloads (Outlook, Word, Excel, Teams, SharePoint); validate mobile behaviour', licensing:'M365 E3 covers mandatory labelling', skip:false },
     tip:"Expect helpdesk queries when recommendations go live. Some users will be confused about why the system is suggesting a label. A short awareness communication before activation ('you may see label suggestions — here's what they mean') significantly reduces ticket volume." },
   { num:"05", zone:"EDUCATE", zoneColor:BUI_ORANGE, color:BUI_ORANGE, colorBg:(d)=>d?"rgba(217,134,28,0.07)":"rgba(217,134,28,0.06)", colorBorder:(d)=>d?"rgba(217,134,28,0.2)":"rgba(217,134,28,0.25)", title:"Mandatory Labelling", subtitle:"Must classify before saving or sending — no protection yet", icon:"⚠️", impact:"elevated",
     desc:"Users must apply a label before saving a document or sending an email — they cannot proceed without classifying. No encryption yet. This is the most significant change management moment in the labelling journey — more impactful than encryption — because it affects every single save and send action. Executive sponsorship and a well-designed taxonomy are non-negotiable.",
     config:[["Mandatory Labelling","On","warn"],["Default Label","General (fallback)","active"],["Protection Actions","None","off"],["User Override","Must select label to proceed","warn"],["Scope","All users — all workloads","active"]],
     outcomes:["100% classified content","High user awareness","Robust taxonomy validation","Elevated helpdesk volume expected"],
-    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Mandatory labelling (requiring users to classify before saving or sending) is a label policy setting included in M365 E3.' },
+    license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Mandatory labelling is a label policy setting covered entirely by M365 E3. Requiring users to classify before saving or sending applies to Outlook, Word, Excel, PowerPoint, and SharePoint. No content inspection, automatic classification, or encryption is involved — this phase is about enforcing the human classification decision, not automating it. This is often the highest-impact phase achievable entirely within E3.' },
     zoneDesc:"Mandatory labelling is the pivotal enforcement milestone. Every user is now a data classifier — the taxonomy must be intuitive enough to support this.", nextPhase:{ time:'4–8 weeks stable before encryption', success:'Mandatory labelling has been stable for at least 4 weeks; mislabelling rate is below agreed threshold (typically <5%); no pending taxonomy changes; pilot group identified for encryption testing', people:'Executive sponsor confirmed for encryption phase; IT team trained on encrypted document behaviour; helpdesk briefed on co-authoring and access issues', process:'Define encryption scope precisely (Highly Confidential label only initially); test co-authoring and external sharing workflows with pilot group; document exception process for encryption access', technology:'Verify Azure RMS is configured in tenant; test AIP Unified Labelling client across all devices; validate co-authoring works for licensed users', licensing:'Purview Suite add-on required for encryption (Azure RMS). Confirm all affected users are licensed before activation', skip:false },
     tip:"The taxonomy must be good before this phase. If users regularly cannot decide between two labels, they will either always pick the wrong one or raise a helpdesk ticket. Any confusion that existed in earlier phases will be amplified here." },
   { num:"06", zone:"ENFORCE", zoneColor:"#ef4444", color:"#ef4444", colorBg:(d)=>d?"rgba(239,68,68,0.07)":"rgba(239,68,68,0.06)", colorBorder:(d)=>d?"rgba(239,68,68,0.2)":"rgba(239,68,68,0.25)", title:"Encryption — Top Labels", subtitle:"Protection applied to Highly Confidential only", icon:"🔐", impact:"elevated",
     desc:"Apply encryption (Azure RMS / Microsoft Purview Information Protection) to Highly Confidential labels only. This is where workflows can genuinely break — co-authoring limitations, third-party app compatibility, external sharing friction. Scope tightly and pilot before broad rollout.",
     config:[["Encryption","On — Highly Confidential only","warn"],["Co-authoring","Enabled (requires AIP UL client)","active"],["External Sharing","Restricted by label policy","warn"],["Protection Actions","Encrypt + access control","warn"],["Scope","Pilot first, then all users","neutral"]],
     outcomes:["Encrypted highly confidential content","Access-controlled sensitive data","Workflow impact data from pilot","External sharing controls active"],
-    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['Encryption via Azure Rights Management on Highly Confidential labels', 'Co-authoring on encrypted documents', 'External sharing access controls via label protection'], note:'Applying a label and visual markings is E3. Encryption actions within label protection (Azure RMS) require the Purview Suite add-on (previously M365 E5 Compliance / AIP P2).' },
+    license:{ base:'M365 E3', addOn:'Purview Suite add-on', addOnFeatures:['Azure Rights Management (RMS) encryption applied via Highly Confidential label protection settings','Co-authoring on encrypted documents — without this, encrypted files cannot be collaboratively edited','External sharing access controls — restrict who can open encrypted files outside the organisation'], note:'Visual markings (headers, footers, watermarks) are E3. Encryption within label protection settings requires Azure Rights Management, which is included in the Purview Suite add-on. All users who need to open, edit, or receive encrypted documents must hold the add-on licence — not just the users who apply the label. Co-authoring on encrypted documents also requires the add-on and the AIP Unified Labelling client.' },
     zoneDesc:"Encryption makes labels real. Protection is now enforced technically, not just visually.", nextPhase:{ time:'8–12 weeks after encryption on top labels is stable', success:'No legitimate workflow disruptions from Highly Confidential encryption; co-authoring working; external sharing process understood; mislabelling rate remains low; Confidential label scope defined', people:'Executive sponsor must sign off before broadening encryption; legal and compliance aligned on external sharing controls; all affected users notified 2 weeks in advance', process:'Define do-not-forward/do-not-copy scope; test external sharing with representative partners; establish process for granting access to encrypted content', technology:'Validate encryption on Confidential label across all workloads; test DLP label-conditioned policies if applicable; confirm Purview Suite licensing covers all users', licensing:'Purview Suite add-on required for all users receiving encrypted content', skip:false },
     tip:"Pilot encryption with a small group of power users first — ideally from departments that handle highly confidential data regularly. Identify co-authoring and external sharing edge cases before broad rollout. Document every workflow disruption and resolve it before expanding scope." },
   { num:"06", zone:"ENFORCE", zoneColor:"#ef4444", color:"#ef4444", colorBg:(d)=>d?"rgba(239,68,68,0.07)":"rgba(239,68,68,0.06)", colorBorder:(d)=>d?"rgba(239,68,68,0.2)":"rgba(239,68,68,0.25)", title:"Encryption Broadened + DLP Convergence", subtitle:"Confidential encrypted; label-conditioned DLP policies active", icon:"🔒", impact:"high",
     desc:"Extend encryption to Confidential labels and configure do-not-forward, do-not-copy, and external sharing restrictions. At this point labels have real teeth. This is also where DLP and labelling converge — your hardest DLP policies should now be conditioned on sensitivity labels, not raw content inspection. Both frameworks must be mature simultaneously to reach this point safely.",
     config:[["Encryption","On — Confidential + Highly Confidential","danger"],["Label-conditioned DLP","Active — hard block on labelled content","danger"],["External Sharing","Blocked for Confidential+","danger"],["DLP Convergence","Label conditions replace content rules","active"],["Scope","All users — all workloads","active"]],
     outcomes:["Label-conditioned DLP enforcement","Broad encryption coverage","External sharing fully controlled","Unified data protection posture"],
-    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['Encryption on Confidential labels (Azure RMS)', 'Do-not-forward and do-not-copy restrictions', 'Label-conditioned DLP hard block policies', 'External sharing blocked via label policy'], note:'This phase requires the Purview Suite add-on for all encryption and label-conditioned DLP actions. Both the DLP and Labelling tracks must be at Purview Suite licensing tier to reach convergence.' },
+    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['Azure RMS encryption extended to Confidential labels (broader user population now affected)','Do-not-forward and do-not-copy restrictions on email and documents','Label-conditioned DLP hard block policies — DLP rules that trigger based on a sensitivity label rather than raw content inspection'], note:'This phase requires the Purview Suite add-on for all users — not just those applying Confidential labels, but anyone who receives or opens a protected document. Label-conditioned DLP policies also require the add-on because the labelling track that produces the label condition is itself an add-on capability. Both the DLP and Labelling tracks must be at Purview Suite tier before this convergence phase is achievable.' },
     zoneDesc:"The convergence of DLP and labelling into a unified protection posture. This is the end-state of a mature Purview deployment.", nextPhase:{ time:'Ongoing', success:'Label-conditioned DLP policies active and stable; auto-labelling scope being planned; taxonomy governance programme established', people:'Named label taxonomy owner; quarterly taxonomy review group; DLP and labelling owners aligned', process:'Quarterly label review; stale label retirement process; exception lifecycle management', technology:'Consider auto-labelling policies (service-side); Content Explorer and Activity Explorer for analytics; Insider Risk Management integration', licensing:'Auto-labelling and analytics require Purview Suite add-on', skip:false },
     tip:"Do not reach for label-conditioned DLP hard blocks until your labelling accuracy is high. If users frequently mislabel content, a DLP policy that blocks on 'Highly Confidential' will generate false positives based on the label error, not the content itself. Labelling phase 05 maturity is a pre-requisite for this phase." },
   { num:"07", zone:"GOVERN", zoneColor:BUI_GRAY, color:BUI_GRAY, colorBg:(d)=>d?"rgba(83,86,87,0.07)":"rgba(83,86,87,0.06)", colorBorder:(d)=>d?"rgba(83,86,87,0.2)":"rgba(83,86,87,0.25)", title:"Auto-labelling & Governance", subtitle:"Service-side policies, label analytics, lifecycle management", icon:"♻️", impact:"minimal",
     desc:"Move from client-side recommendations to server-side auto-labelling policies in Exchange, SharePoint, and OneDrive. Labels are applied automatically based on content inspection, without user action. Establish a formal label governance programme: taxonomy reviews, stale label retirement, analytics, and integration with Conditional Access and Insider Risk Management.",
     config:[["Auto-labelling","On — service-side","active"],["Label Analytics","Active — Purview dashboard","active"],["Taxonomy Reviews","Quarterly cadence","active"],["Conditional Access","Integrated with label conditions","active"],["Governance Owner","Named label taxonomy owner","active"]],
     outcomes:["Automated classification coverage","Label lifecycle governance","Analytics-driven taxonomy tuning","Integration with Conditional Access"],
-    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['Service-side auto-labelling policies (Exchange, SharePoint, OneDrive)', 'Advanced trainable classifiers for auto-labelling', 'Label analytics in Content Explorer and Activity Explorer'], note:'Server-side auto-labelling requires the Purview Suite add-on. This is the most license-intensive phase in the labelling track.' },
+    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['Service-side auto-labelling policies — labels applied automatically by Exchange transport rules or SharePoint/OneDrive background scan without user action','Trainable classifiers for auto-labelling conditions (e.g. automatically label all HR documents as Confidential/HR)','Content Explorer and Activity Explorer — analytics showing label coverage across the tenant and labelling activity over time'], note:'Server-side auto-labelling is the most licence-intensive capability in the labelling track and requires the Purview Suite add-on. Unlike client-side recommendations (phase 04), this runs as a background service across all content at rest — not just new documents. Trainable classifiers for auto-labelling conditions also require the add-on. Ensure simulation mode is used for auto-labelling policies before enforcement to avoid unexpected mass-labelling.' },
     zoneDesc:"Sustain the labelling programme through automation and governance. Labels that aren't governed become stale and untrustworthy.", nextPhase:{ skip:true },
     tip:"Auto-labelling is not the starting point — it belongs here, late in the maturity model. Apply simulation mode to auto-labelling policies before activating them in enforcement mode. Users may be surprised to find files labelled and encrypted without touching them — communication is still required even at this automated stage." },
 ];
+
+// ── INSIDER RISK MANAGEMENT PHASES ───────────────────────────────────────────
+// ⚠ ALL IRM phases require the Purview Suite add-on — no E3 baseline capability
+const irmPhases = [
+  { num:"01", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"IRM Enabled — Observation Only", subtitle:"Policies on, alerts generated, no investigation action taken", icon:"👁️", impact:"none",
+    desc:"Enable Insider Risk Management policies in Microsoft Purview — starting with the built-in templates (Data leaks, Data theft by departing users, Security policy violations). IRM begins building behavioural baselines per user. Analysts can see alerts but no formal investigation workflow is active yet. This phase is purely about signal generation and baseline establishment.",
+    config:[["IRM Analytics Scan","Run first — no policies required","active"],["IRM Policies","Active — observation mode","active"],["Alert Review","View only — no action","neutral"],["Investigation Workflow","Not yet active","off"],["HR Connector","Optional — recommended","neutral"],["Scope","All licensed users","active"]],
+    outcomes:["Behavioural baseline established","Alert volume understood","Signal quality assessment","Zero user impact"],
+    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['IRM Analytics scan — assess potential insider risk areas across the tenant before any policies are configured','IRM policy templates: Data leaks by departing users, General data leaks, Security policy violations','Behavioural analytics and user risk scoring engine'], note:'IRM Analytics (the pre-policy risk scan) is available to any tenant that has audit logging enabled and can be run without purchasing the full add-on — it is the recommended first step to assess whether IRM is worth deploying. However, activating actual IRM policies and receiving alerts requires the Purview Suite add-on (formerly M365 E5 Compliance). The add-on is required per user for all users whose activity will be monitored. M365 E3 alone does not include IRM policy capabilities.' },
+    zoneDesc:"IRM begins with observation. The system needs time to build accurate behavioural baselines before generating meaningful alerts. Rushing into investigations before baselines are established produces noise, not signal.",
+    nextPhase:{ time:'3–4 weeks', success:'IRM policies generating alerts; alert volume is understood; signal types mapped to policy templates; no investigation action taken yet; analyst team identified', people:'IRM programme owner identified; security/SOC team briefed on IRM concept; legal and HR engaged on privacy and investigation obligations', process:'Document which IRM policy templates are active; review alert volume and categorisation; identify any immediate high-severity signals requiring escalation', technology:'IRM policies configured in Microsoft Purview; HR Connector configured if HRIS is available (strongly recommended for departing user signals); audit logging verified', licensing:'Purview Suite add-on required for all IRM capabilities. Confirm all users are licensed before activation.', skip:false },
+    tip:"Connect your HR system before enabling IRM if at all possible. The HR Connector feeds IRM with resignation and termination dates — without it, departing user policies cannot generate their most valuable signals. This connector is the single highest-value configuration step in the IRM deployment." },
+  { num:"02", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Policy Tuning & Signal Validation", subtitle:"Alert triage, threshold calibration, false positive reduction", icon:"🔧", impact:"minimal",
+    desc:"Analyse the alerts generated in phase 01 and tune policy thresholds, indicators, and scoring. IRM uses a risk scoring model — adjust which activities count as risk indicators and how much weight each carries. Remove indicators generating consistent false positives. Add custom indicators where your organisation has specific risk patterns not covered by default templates.",
+    config:[["Alert Triage","Active — analyst review","active"],["Threshold Tuning","In progress","neutral"],["Custom Indicators","Under review","neutral"],["Risk Score Calibration","Active","active"],["False Positive Register","Established","active"]],
+    outcomes:["Calibrated risk thresholds","Reduced false positive rate","Custom indicator library","Analyst triage readiness"],
+    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['Custom risk indicators — define organisation-specific behaviours that contribute to a user\'s risk score','Sequence detection — alert when a user performs a specific sequence of risky actions (e.g. downloaded then emailed sensitive file)','Cumulative exfiltration detection — detect gradual data theft patterns over time rather than single events'], note:'All tuning capabilities in this phase are included in the Purview Suite add-on already required from phase 01. No additional licence tier is needed. Custom indicators and sequence detection are part of the core IRM add-on capability set. The focus here is configuration quality, not additional licensing.' },
+    zoneDesc:"Signal quality determines investigation quality. Every false positive that reaches an analyst erodes trust in the system and wastes investigation capacity.",
+    nextPhase:{ time:'4–6 weeks', success:'Alert volume is manageable and predominantly true positive; thresholds calibrated; false positive rate tracked and reducing; custom indicators reviewed and approved by legal and HR', people:'Legal and HR must review and approve custom indicator scope — privacy obligations apply; security lead signed off on threshold changes', process:'False positive register in use; weekly alert review cadence; change log for all threshold and indicator changes', technology:'IRM policy settings updated; any custom connectors for additional signal sources reviewed; alert triage dashboard configured', licensing:'No additional licensing beyond Purview Suite add-on already in place', skip:false },
+    tip:"Get legal and HR involved in custom indicator decisions early. IRM monitors user behaviour — some indicators (personal storage uploads, after-hours access) can feel intrusive and must be proportionate to the risk being managed. Document the rationale for every active indicator." },
+  { num:"03", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Analyst Triage Workflow", subtitle:"Formal investigation process active — cases opened and managed", icon:"🔍", impact:"low",
+    desc:"Activate the formal investigation workflow. Analysts open cases for high-severity alerts, gather evidence through Content Explorer and Activity Explorer, and produce investigation summaries. Establish escalation paths to HR and legal for confirmed incidents. This phase builds the institutional capability to act on IRM alerts — not just observe them.",
+    config:[["Case Management","Active","active"],["Content Explorer","Analyst access configured","active"],["Activity Explorer","Analyst access configured","active"],["Escalation Path","HR and legal defined","active"],["Investigation SLA","Defined and tracked","active"]],
+    outcomes:["Active case management","Evidence gathering capability","Escalation path tested","Investigation SLA established"],
+    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['IRM Case Management — open, manage, and track investigation cases within Purview','Activity Explorer scoped to IRM — view a complete timeline of a user\'s risky activities within a case','eDiscovery (Premium) escalation — transfer confirmed IRM cases to eDiscovery Premium for legal hold and formal proceedings'], note:'Case management and Activity Explorer access for IRM investigations are included in the Purview Suite add-on. eDiscovery (Premium) for IRM case escalation requires the same add-on. Note that analysts who need access to IRM investigation tools require specific IRM role assignments in the Purview portal — licensing alone is not sufficient, correct RBAC configuration is also required.' },
+    zoneDesc:"Investigation capability is the operational core of IRM. Alerts without a structured response process are just noise.",
+    nextPhase:{ time:'3–4 weeks', success:'Investigation SLA being met; cases opened for high-severity alerts; escalation to HR and legal tested at least once; analysts confident with evidence gathering tools', people:'HR and legal formally engaged in investigation process; named IRM case reviewers identified in security team; management briefed on how confirmed incidents are handled', process:'Investigation playbook documented; evidence handling and chain of custody process defined; escalation triggers clearly defined', technology:'Case management workflow tested end-to-end; Content Explorer and Activity Explorer access verified for all analysts; eDiscovery export tested', licensing:'No additional licensing beyond Purview Suite add-on already in place', skip:false },
+    tip:"Run a tabletop exercise before going live with investigations. Simulate a departing employee scenario and walk through the full process — alert to case to escalation to HR. Identify gaps in your process, not in a real incident." },
+  { num:"04", zone:"EDUCATE", zoneColor:BUI_ORANGE, color:BUI_ORANGE, colorBg:(d)=>d?"rgba(217,134,28,0.07)":"rgba(217,134,28,0.06)", colorBorder:(d)=>d?"rgba(217,134,28,0.2)":"rgba(217,134,28,0.25)", title:"HR & Legal Integration", subtitle:"Formal workflows between IRM, HR, and legal — governance active", icon:"⚖️", impact:"low",
+    desc:"Formalise the operating model between IRM, HR, and legal. Define which alert severities trigger HR involvement, what the legal review process is for confirmed incidents, and how IRM evidence is handled in formal proceedings. Establish privacy notices and employee communication where required by your jurisdiction. In South Africa, POPIA requires that monitoring of employee communications be proportionate, necessary, and disclosed.",
+    config:[["HR Workflow","Formally integrated","active"],["Legal Review Process","Documented and tested","active"],["Privacy Notice","Published where required","active"],["POPIA Compliance","Reviewed for SA context","active"],["Incident Reporting","Process documented","active"]],
+    outcomes:["Legal and HR operating model","POPIA-aligned monitoring framework","Formal incident response workflow","Privacy obligations documented"],
+    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['IRM anonymisation controls — usernames pseudonymised by default until a case is formally opened; de-anonymisation requires a specific role assignment','HR Connector data ingestion — feeds resignation, termination, and performance data from your HRIS into IRM to trigger departing-user policies','IRM notice templates — configurable notices that can be sent to users flagged by IRM policies (used for awareness or warning scenarios)'], note:'All capabilities in this phase are included in the Purview Suite add-on. The HR Connector is a free data connector included with IRM — there is no additional licensing cost for the connector itself, but it requires technical configuration (a JSON credentials file and scheduled import). User anonymisation is on by default in IRM; de-anonymising a user to open a formal case requires the Insider Risk Management Investigator role explicitly assigned in the Purview portal.' },
+    zoneDesc:"IRM without HR and legal integration is a detection tool without consequences. This phase makes IRM operationally real.",
+    nextPhase:{ time:'6–8 weeks', success:'HR and legal workflows documented and tested; POPIA review completed; at least one real incident handled end-to-end through the formal process; privacy notices in place where required', people:'CISO, HR Director, and General Counsel must all formally sign off on the IRM operating model; employee privacy notices reviewed by legal', process:'Formal IRM operating model document produced; escalation thresholds documented; incident evidence handling procedure signed off by legal', technology:'IRM anonymisation settings configured; HR connector validated; notice templates configured where required', licensing:'No additional licensing beyond Purview Suite add-on already in place', skip:false },
+    tip:"In South Africa, POPIA Section 11 requires that processing of personal information (which includes behavioural monitoring) must be necessary, proportionate, and have a lawful basis. Monitoring for legitimate business risk management is generally lawful under POPIA — but employees should be made aware that monitoring occurs. A clear acceptable use policy and privacy notice reduces legal risk significantly." },
+  { num:"05", zone:"ENFORCE", zoneColor:"#ef4444", color:"#ef4444", colorBg:(d)=>d?"rgba(239,68,68,0.07)":"rgba(239,68,68,0.06)", colorBorder:(d)=>d?"rgba(239,68,68,0.2)":"rgba(239,68,68,0.25)", title:"Adaptive Protection Activated", subtitle:"IRM risk scores dynamically tighten DLP policy enforcement", icon:"🛡️", impact:"moderate",
+    desc:"Enable Adaptive Protection — the integration point between IRM and DLP. Users flagged as elevated risk by IRM automatically receive stricter DLP enforcement: what was a policy tip becomes a soft block, what was a soft block becomes a hard block. This dynamic tightening happens automatically based on the user's current risk score, without any manual policy change. Requires DLP to be at phase 05 (Soft Block) or above.",
+    config:[["Adaptive Protection","Active","active"],["Elevated Risk → Hard Block","Automatic","danger"],["Minor Risk → Soft Block","Automatic","warn"],["Low Risk → Standard DLP","No change","neutral"],["Risk Level Review","Automated — IRM scoring","active"]],
+    outcomes:["Dynamic risk-based DLP enforcement","Automated response to IRM signals","IRM and DLP programme convergence","Proportionate enforcement by risk level"],
+    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['Adaptive Protection — IRM risk levels (Elevated, Minor, Low) automatically drive DLP policy tightening without manual intervention','Requires both IRM and DLP to be licensed and active — Adaptive Protection bridges the two; neither works for this feature in isolation','Automated risk level transitions — as a user\'s behaviour improves, their risk level drops and DLP controls automatically relax'], note:'Adaptive Protection requires the Purview Suite add-on for all users in scope for both the IRM component (risk scoring) and the DLP component (dynamic enforcement). This is the highest-value integration in the framework but also requires the most maturity — IRM must be generating reliable risk scores and DLP must be at soft block or above before Adaptive Protection can be meaningfully activated. Do not activate before IRM phase 03 at minimum.' },
+    zoneDesc:"Adaptive Protection is the intelligent enforcement layer — DLP that responds to who the user is and what risk they carry, not just what content they are handling.",
+    nextPhase:{ time:'Ongoing', success:'Adaptive Protection policies active and stable; risk level distribution understood; no legitimate users incorrectly elevated; DLP enforcement changes correlating with IRM risk signals', people:'IRM and DLP programme owners meeting regularly; HR and legal aware of automated enforcement changes; helpdesk briefed on risk-level-driven blocks', process:'Regular review of user risk level distribution; process for users to appeal incorrect risk elevation; feedback loop between Adaptive Protection incidents and IRM tuning', technology:'Monitor Adaptive Protection activity in Purview portal; review IRM risk score accuracy monthly; tune indicators if false elevations occurring', licensing:'Purview Suite add-on required. All users subject to Adaptive Protection enforcement must be licensed.', skip:false },
+    tip:"Adaptive Protection is only as accurate as your IRM risk scoring. Before activating, review your IRM false positive rate — any user incorrectly flagged as elevated risk will receive unjustified hard blocks. Start with Adaptive Protection in a limited scope (a single department or high-risk role) before expanding to all users." },
+  { num:"06", zone:"GOVERN", zoneColor:BUI_GRAY, color:BUI_GRAY, colorBg:(d)=>d?"rgba(83,86,87,0.07)":"rgba(83,86,87,0.06)", colorBorder:(d)=>d?"rgba(83,86,87,0.2)":"rgba(83,86,87,0.25)", title:"IRM + DLP Convergence & Governance", subtitle:"Unified risk programme — IRM, DLP, and labelling aligned", icon:"♻️", impact:"minimal",
+    desc:"The IRM programme reaches its mature state: risk scoring is calibrated, investigation workflows are embedded in HR and legal operations, Adaptive Protection is active, and the IRM programme is formally aligned with both the DLP and sensitivity labelling tracks. Establish a unified data risk governance forum with ownership across security, HR, legal, and business units.",
+    config:[["Adaptive Protection","Active and stable","active"],["Governance Forum","Quarterly — security, HR, legal, business","active"],["IRM + DLP Reporting","Unified dashboard","active"],["Policy Review Cadence","Quarterly","active"],["Label ↔ IRM Alignment","Sensitivity label signals feed IRM","active"]],
+    outcomes:["Unified data risk posture","Cross-programme governance","IRM, DLP, and labelling convergence","Ongoing risk programme management"],
+    license:{ base:'Purview Suite add-on', addOn:'Purview Suite add-on', addOnFeatures:['Audit (Premium) — extended audit log retention (up to 1 year) and high-value IRM forensic events not available in Audit Standard','Unified IRM + DLP reporting dashboard — cross-programme visibility in the Purview portal','Communication Compliance (optional) — monitor communications for policy violations, complements IRM for regulated industries'], note:'All capabilities in this governance phase are included in the Purview Suite add-on already in place from earlier phases. Audit (Premium) is specifically recommended at this maturity level — standard audit retention (90 days) is insufficient for IRM investigations that may span months. Communication Compliance, which pairs well with IRM for financial services and regulated industries, is also included in the Purview Suite add-on and is worth evaluating as a governance-phase addition.' },
+    zoneDesc:"Governance is what makes the programme sustainable. IRM without structured ownership becomes stale — risk models need updating as the organisation and threat landscape evolve.", nextPhase:{ skip:true },
+    tip:"At this maturity level, feed IRM incident patterns back into your DLP policy design and sensitivity label taxonomy. A pattern of employees exfiltrating data labelled as General (when it should be Confidential) is a labelling problem, not just an IRM problem. The three programmes should be informing each other continuously." },
+];
+
 
 const zones = [
   { name:"DISCOVER", color:"#10b981" },
@@ -253,17 +312,23 @@ function UserImpactPanel({ impactKey, dark, t }) {
 
 // ── ROADMAP OVERVIEW ─────────────────────────────────────────────────────────
 // Phase durations in weeks — drives proportional block widths
-const DLP_DURATIONS    = [3, 3, 3, 6, 8, 12, 12];   // 7 DLP phases
-const LABEL_DURATIONS  = [6, 3, 3, 5, 6, 8, 10, 12]; // 8 Label phases
+const DLP_DURATIONS    = [3, 3, 3, 6, 8, 12, 12, 12]; // 8 phases: sim,pilot,alerts,tips,soft,hard,adaptive,cont-imp
+const IRM_DURATIONS    = [3, 4, 3, 6, 12, 12];      // 6 IRM phases
+const LABEL_DURATIONS  = [6, 3, 3, 5, 6, 8, 10, 12]; // 8 Label phases (total 53w)
 
 const ZONE_COLORS = { DISCOVER:"#10b981", EDUCATE:BUI_ORANGE, ENFORCE:"#ef4444", GOVERN:BUI_GRAY };
 
-function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabelTab, setView }) {
-  // lineX is 0..1 representing position across the full timeline width
-  const [lineX, setLineX] = useState(0.55);
-  const [dragging, setDragging] = useState(false);
+function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabelTab, setIrmActive, setIrmTab, setView }) {
   const [showScope, setShowScope] = useState(true);
-  const containerRef = useRef(null);
+  // Three independent scope lines — one per track
+  const [dlpLineX,   setDlpLineX]   = useState(0.55);
+  const [labelLineX, setLabelLineX] = useState(0.55);
+  const [irmLineX,   setIrmLineX]   = useState(0.55);
+  // Which track is currently being dragged
+  const [draggingTrack, setDraggingTrack] = useState(null); // "dlp"|"label"|"irm"|null
+  const dlpRef   = useRef(null);
+  const labelRef = useRef(null);
+  const irmRef   = useRef(null);
 
   // Cumulative width offsets (0..1) for each track
   function getCumulative(durations) {
@@ -273,36 +338,47 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
   }
   const dlpCum   = getCumulative(DLP_DURATIONS);
   const labelCum = getCumulative(LABEL_DURATIONS);
+  const irmCum   = getCumulative(IRM_DURATIONS);
 
-  // Which phase index is the boundary for a given track at current lineX
-  function boundaryIndex(cum) {
-    // last phase whose end <= lineX (fully covered), or -1 if none
+  // Which phase index is the boundary for a given track
+  function boundaryIndex(cum, lineX) {
+    // A phase is "covered" as soon as the line enters it (>= its start edge)
+    // -1 = nothing covered, phases.length-1 = all covered
     let last = -1;
-    cum.forEach((c,i) => { if (lineX >= c.end) last = i; });
-    return last; // -1 = nothing covered, phases.length-1 = all covered
+    cum.forEach((c,i) => { if (lineX >= c.start) last = i; });
+    return last;
   }
-  const dlpBound   = boundaryIndex(dlpCum);
-  const labelBound = boundaryIndex(labelCum);
+  const dlpBound   = boundaryIndex(dlpCum,   dlpLineX);
+  const labelBound = boundaryIndex(labelCum, labelLineX);
+  const irmBound   = boundaryIndex(irmCum,   irmLineX);
 
-  // Pointer drag handlers — attach to the container div
-  function onPointerDown(e) {
-    e.currentTarget.setPointerCapture(e.pointerId);
-    setDragging(true);
-    updateLine(e);
+  // Per-track drag handlers using pointer capture on each track's own ref
+  function makeTrackHandlers(trackId, ref, setLineX) {
+    return {
+      onPointerDown(e) {
+        e.currentTarget.setPointerCapture(e.pointerId);
+        setDraggingTrack(trackId);
+        updateX(e, ref, setLineX);
+      },
+      onPointerMove(e) {
+        if (draggingTrack !== trackId) return;
+        updateX(e, ref, setLineX);
+      },
+      onPointerUp(e) {
+        setDraggingTrack(null);
+      },
+    };
   }
-  function onPointerMove(e) {
-    if (!dragging) return;
-    updateLine(e);
-  }
-  function onPointerUp(e) {
-    setDragging(false);
-  }
-  function updateLine(e) {
-    const rect = containerRef.current?.getBoundingClientRect();
+  function updateX(e, ref, setLineX) {
+    const rect = ref.current?.getBoundingClientRect();
     if (!rect) return;
     const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
     setLineX(x);
   }
+
+  const dlpHandlers   = showScope ? makeTrackHandlers("dlp",   dlpRef,   setDlpLineX)   : {};
+  const labelHandlers = showScope ? makeTrackHandlers("label", labelRef, setLabelLineX) : {};
+  const irmHandlers   = showScope ? makeTrackHandlers("irm",   irmRef,   setIrmLineX)   : {};
 
   // Label for current boundary
   function boundaryLabel(cum, phases, bound) {
@@ -312,23 +388,28 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
   }
 
   // Total weeks for scale bar
-  const dlpTotal   = DLP_DURATIONS.reduce((a,b)=>a+b,0);   // 47
-  const labelTotal = LABEL_DURATIONS.reduce((a,b)=>a+b,0);  // 53
-  const maxWeeks   = Math.max(dlpTotal, labelTotal);         // 53
+  const dlpTotal   = DLP_DURATIONS.reduce((a,b)=>a+b,0);
+  const labelTotal = LABEL_DURATIONS.reduce((a,b)=>a+b,0);
+  const irmTotal   = IRM_DURATIONS.reduce((a,b)=>a+b,0);
+  const maxWeeks   = Math.max(dlpTotal, labelTotal, irmTotal);
 
-  function TrackRow({ phases, durations, cum, bound, trackLabel, trackColor, onPhaseClick }) {
+  function TrackRow({ phases, durations, cum, bound, trackLabel, trackColor, onPhaseClick, lineX, trackRef, handlers, isDragging }) {
     const TRACK_H = 96;
     return (
       <div style={{ marginBottom:6 }}>
         {/* Track label */}
         <div style={{ fontSize:11, fontWeight:700, letterSpacing:"0.09em", color:trackColor, marginBottom:5, fontFamily:CAL }}>{trackLabel}</div>
         {/* Phase blocks — proportional widths */}
-        <div style={{ position:"relative", height:TRACK_H, display:"flex", gap:2 }}>
+        <div
+          ref={trackRef}
+          {...handlers}
+          style={{ position:"relative", height:TRACK_H, display:"flex", gap:2,
+            cursor: handlers.onPointerDown ? (isDragging?"grabbing":"grab") : "default",
+            userSelect:"none", touchAction:"none" }}>
           {phases.map((p, i) => {
             const covered  = i <= bound;
-            const isEdge   = i === bound; // last covered phase
+            const isEdge   = i === bound;
             const zColor   = ZONE_COLORS[p.zone] || "#94a3b8";
-            // Scale width relative to maxWeeks so both tracks align on the same time axis
             const widthPct = (durations[i] / maxWeeks * 100).toFixed(2) + "%";
             return (
               <div key={i}
@@ -342,15 +423,13 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
                   transition:"opacity 0.15s, border 0.15s",
                   display:"flex", flexDirection:"column",
                 }}>
-                {/* Zone colour band at top */}
                 <div style={{ height:5, background: covered ? p.zoneColor : zColor, opacity: covered?1:0.4, flexShrink:0 }}/>
-                {/* Content */}
                 <div style={{
                   flex:1, background: covered ? `${p.zoneColor}18` : (dark?"rgba(255,255,255,0.03)":"rgba(0,0,0,0.03)"),
                   padding:"5px 5px 3px", display:"flex", flexDirection:"column", justifyContent:"space-between",
                 }}>
                   <div>
-                    <div style={{ fontSize:11, fontWeight:700, color: covered?p.zoneColor:p.zoneColor, letterSpacing:"0.05em", lineHeight:1.2, fontFamily:CAL }}>{p.zone}</div>
+                    <div style={{ fontSize:11, fontWeight:700, color:p.zoneColor, letterSpacing:"0.05em", lineHeight:1.2, fontFamily:CAL }}>{p.zone}</div>
                     <div style={{ fontSize:12, fontWeight:700, color: covered?t.text1:t.text4, lineHeight:1.25, marginTop:2, fontFamily:CAL }}>{p.title}</div>
                     {p.isPilot && <div style={{ fontSize:10, color:p.zoneColor, background:`${p.zoneColor}15`, padding:"1px 4px", borderRadius:99, display:"inline-block", marginTop:2, border:`1px solid ${p.zoneColor}40`, fontFamily:CAL }}>PILOT</div>}
                   </div>
@@ -362,6 +441,21 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
               </div>
             );
           })}
+
+          {/* Per-track scope line — inside the same relative container as phases */}
+          {handlers.onPointerDown && (
+            <div style={{ position:"absolute", top:0, bottom:0, left:`${lineX*100}%`,
+              width:2, background:BUI_ORANGE, pointerEvents:"none", zIndex:10 }}>
+              <div style={{ position:"absolute", top:-7, left:"50%", transform:"translateX(-50%)",
+                width:16, height:16, borderRadius:"50%",
+                background:BUI_ORANGE, border:"2px solid #fff",
+                boxShadow:"0 2px 5px rgba(0,0,0,0.3)" }}/>
+              <div style={{ position:"absolute", bottom:-7, left:"50%", transform:"translateX(-50%)",
+                width:16, height:16, borderRadius:"50%",
+                background:BUI_ORANGE, border:"2px solid #fff",
+                boxShadow:"0 2px 5px rgba(0,0,0,0.3)" }}/>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -374,7 +468,7 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
       <div style={{ marginBottom:18 }}>
         <h1 style={{ fontSize:22, fontWeight:700, color:t.text1, margin:"0 0 4px", fontFamily:CAL }}>Purview Adoption Roadmap</h1>
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:16 }}>
-          <p style={{ fontSize:14, color:t.text4, margin:0, fontFamily:CAL }}>{showScope ? "Phase widths are proportional to typical duration. Drag the orange line to set the BUI engagement boundary." : "Phase widths are proportional to typical duration. All phases shown — toggle scope to set the engagement boundary."}</p>
+          <p style={{ fontSize:14, color:t.text4, margin:0, fontFamily:CAL }}>{showScope ? "Phase widths are proportional to typical duration. Each track has its own draggable boundary line." : "Phase widths are proportional to typical duration. All phases shown — toggle scope to set the engagement boundary."}</p>
           <button onClick={()=>setShowScope(s=>!s)} style={{
             flexShrink:0, display:"flex", alignItems:"center", gap:8, padding:"8px 16px",
             borderRadius:99, cursor:"pointer", fontFamily:CAL, fontSize:14, fontWeight:600,
@@ -399,10 +493,11 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
       <div style={{ background:t.bgCard, border:`1px solid ${t.border}`, borderRadius:14, padding:"20px 22px 16px", boxShadow:t.shadow, marginBottom:16 }}>
 
         {/* Boundary labels — only when scope line visible */}
-        {showScope && <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:16 }}>
+        {showScope && <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:16 }}>
           {[
-            { label:"DLP", color:"#3b82f6",  text: boundaryLabel(dlpCum,   dlpPhases,   dlpBound)   },
-            { label:"Labelling", color:"#a78bfa", text: boundaryLabel(labelCum, labelPhases, labelBound) },
+            { label:"DLP",        color:"#3b82f6",  text: boundaryLabel(dlpCum,   dlpPhases,   dlpBound)   },
+            { label:"Labelling",  color:"#a78bfa",  text: boundaryLabel(labelCum, labelPhases, labelBound) },
+            { label:"Insider Risk", color:"#f59e0b", text: boundaryLabel(irmCum,   irmPhases,   irmBound)   },
           ].map(b=>(
             <div key={b.label} style={{ padding:"8px 14px", borderRadius:8, background:dark?`${b.color}0a`:`${b.color}08`, border:`1px solid ${b.color}25` }}>
               <span style={{ fontSize:11, fontWeight:700, color:b.color, letterSpacing:"0.09em", marginRight:8, fontFamily:CAL }}>{b.label} ENGAGEMENT ENDS</span>
@@ -412,18 +507,13 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
         </div>}
 
         {/* ── DRAGGABLE GANTT AREA ── */}
-        <div
-          ref={containerRef}
-          onPointerDown={showScope ? onPointerDown : undefined}
-          onPointerMove={showScope ? onPointerMove : undefined}
-          onPointerUp={showScope ? onPointerUp : undefined}
-          style={{ position:"relative", cursor: showScope?(dragging?"grabbing":"grab"):"default", userSelect:"none", touchAction:"none" }}
-        >
+        <div style={{ position:"relative" }}>
           {/* DLP track */}
           <TrackRow
             phases={dlpPhases} durations={DLP_DURATIONS} cum={dlpCum} bound={dlpBound}
-            trackLabel="DLP MATURITY" trackColor="#3b82f6"
+            trackLabel="DLP POLICIES" trackColor="#3b82f6"
             onPhaseClick={(i)=>{ setDlpActive(i); setDlpTab("overview"); setView("dlp"); }}
+            lineX={dlpLineX} trackRef={dlpRef} handlers={dlpHandlers} isDragging={draggingTrack==="dlp"}
           />
 
           <div style={{ height:10 }}/>
@@ -433,44 +523,19 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
             phases={labelPhases} durations={LABEL_DURATIONS} cum={labelCum} bound={labelBound}
             trackLabel="SENSITIVITY LABELLING" trackColor="#a78bfa"
             onPhaseClick={(i)=>{ setLabelActive(i); setLabelTab("overview"); setView("labels"); }}
+            lineX={labelLineX} trackRef={labelRef} handlers={labelHandlers} isDragging={draggingTrack==="label"}
           />
 
-          {/* ── VERTICAL DRAG LINE — only when scope enabled ── */}
-          {showScope && <div style={{
-            position:"absolute", top:0, bottom:0,
-            left:`${lineX*100}%`,
-            width:2,
-            background:BUI_ORANGE,
-            pointerEvents:"none",
-            zIndex:10,
-          }}>
-            {/* Top handle */}
-            <div style={{
-              position:"absolute", top:-8, left:"50%", transform:"translateX(-50%)",
-              width:18, height:18, borderRadius:"50%",
-              background:BUI_ORANGE, border:"2.5px solid #fff",
-              boxShadow:"0 2px 6px rgba(0,0,0,0.35)",
-              display:"flex", alignItems:"center", justifyContent:"center",
-            }}>
-              <div style={{ width:3, height:3, borderRadius:"50%", background:"#fff" }}/>
-            </div>
-            {/* Label */}
-            <div style={{
-              position:"absolute", top:22, left:6,
-              background:BUI_ORANGE, color:"#fff",
-              fontSize:11, fontWeight:700, letterSpacing:"0.06em",
-              padding:"2px 7px", borderRadius:99,
-              whiteSpace:"nowrap", fontFamily:CAL,
-              boxShadow:"0 1px 4px rgba(0,0,0,0.2)",
-            }}>BUI SCOPE</div>
-            {/* Bottom handle */}
-            <div style={{
-              position:"absolute", bottom:-8, left:"50%", transform:"translateX(-50%)",
-              width:18, height:18, borderRadius:"50%",
-              background:BUI_ORANGE, border:"2.5px solid #fff",
-              boxShadow:"0 2px 6px rgba(0,0,0,0.35)",
-            }}/>
-          </div>}
+          <div style={{ height:10 }}/>
+
+          {/* IRM track */}
+          <TrackRow
+            phases={irmPhases} durations={IRM_DURATIONS} cum={irmCum} bound={irmBound}
+            trackLabel="INSIDER RISK MANAGEMENT" trackColor="#f59e0b"
+            onPhaseClick={(i)=>{ setIrmActive(i); setIrmTab("overview"); setView("irm"); }}
+            lineX={irmLineX} trackRef={irmRef} handlers={irmHandlers} isDragging={draggingTrack==="irm"}
+          />
+
         </div>
 
         {/* ── WEEK SCALE BAR ── */}
@@ -498,7 +563,7 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
         </div>
         {showScope && <div style={{ display:"flex", alignItems:"center", gap:6, fontSize:13, color:t.text3, fontFamily:CAL }}>
           <div style={{ width:2, height:16, background:BUI_ORANGE }}/>
-          <span>Engagement boundary (drag to adjust)</span>
+          <span>Engagement boundary — drag each track's line independently</span>
         </div>}
         {[{z:"DISCOVER",c:"#10b981"},{z:"EDUCATE",c:BUI_ORANGE},{z:"ENFORCE",c:"#ef4444"},{z:"GOVERN",c:BUI_GRAY}].map(z=>(
           <div key={z.z} style={{ display:"flex", alignItems:"center", gap:5, fontSize:13, color:t.text3, fontFamily:CAL }}>
@@ -508,7 +573,13 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
         ))}
       </div>
 
-      {/* ── SMART CALLOUT ── */}
+      {/* ── SMART CALLOUTS ── */}
+      {dlpBound >= 6 && irmBound >= 4 && (
+        <div style={{ padding:"12px 16px", borderRadius:10, background:"rgba(245,158,11,0.08)", border:"1px solid rgba(245,158,11,0.3)", marginBottom:12 }}>
+          <div style={{ fontSize:11, fontWeight:700, color:"#f59e0b", letterSpacing:"0.08em", marginBottom:4, fontFamily:CAL }}>IRM + DLP CONVERGENCE REACHED — ADAPTIVE PROTECTION IN SCOPE</div>
+          <p style={{ fontSize:13, color:t.text3, margin:0, lineHeight:1.55, fontFamily:CAL }}>Both the IRM and DLP tracks are scoped to the Adaptive Protection convergence point. IRM risk scores will dynamically tighten DLP enforcement for elevated-risk users. Purview Suite add-on required for all licensed users.</p>
+        </div>
+      )}
       {dlpBound >= 5 && labelBound >= 6 && (
         <div style={{ padding:"12px 16px", borderRadius:10, background:"rgba(16,185,129,0.08)", border:"1px solid rgba(16,185,129,0.25)", marginBottom:12 }}>
           <div style={{ fontSize:11, fontWeight:700, color:"#10b981", letterSpacing:"0.08em", marginBottom:4, fontFamily:CAL }}>CONVERGENCE SCOPE REACHED</div>
@@ -833,6 +904,8 @@ export default function App() {
   const [labelActive,setLabelActive]= useState(0);
   const [dlpTab,     setDlpTab]     = useState("overview");
   const [labelTab,   setLabelTab]   = useState("overview");
+  const [irmActive,  setIrmActive]  = useState(0);
+  const [irmTab,     setIrmTab]     = useState("overview");
 
   const t = useMemo(()=>makeTheme(dark),[dark]);
 
@@ -840,6 +913,7 @@ export default function App() {
     { id:"roadmap", label:"Roadmap"            },
     { id:"dlp",     label:"DLP Policies"        },
     { id:"labels",  label:"Sensitivity Labels" },
+    { id:"irm",     label:"Insider Risk"        },
   ];
 
   return (
@@ -865,7 +939,7 @@ export default function App() {
           <div style={{ width:1, height:26, background:t.border }}/>
           <div>
             <div style={{ fontSize:11, fontWeight:700, color:t.text1 }}>Microsoft Purview</div>
-            <div style={{ fontSize:13, color:BUI_GRAY, letterSpacing:"0.08em" }}>{view==="roadmap"?"ADOPTION ROADMAP":"MATURITY FRAMEWORK"}</div>
+            <div style={{ fontSize:13, color:BUI_GRAY, letterSpacing:"0.08em" }}>{view==="roadmap"?"ADOPTION ROADMAP":view==="irm"?"INSIDER RISK":"MATURITY FRAMEWORK"}</div>
           </div>
           <div style={{ width:1, height:26, background:t.border }}/>
           {/* Track switcher */}
@@ -891,6 +965,7 @@ export default function App() {
             dark={dark} t={t}
             dlpActive={dlpActive} setDlpActive={setDlpActive} setDlpTab={setDlpTab}
             labelActive={labelActive} setLabelActive={setLabelActive} setLabelTab={setLabelTab}
+            irmActive={irmActive} setIrmActive={setIrmActive} setIrmTab={setIrmTab}
             setView={setView}
           />
         )}
@@ -905,6 +980,18 @@ export default function App() {
             phases={labelPhases} active={labelActive} setActive={setLabelActive}
             tab={labelTab} setTab={setLabelTab} dark={dark} t={t}
           />
+        )}
+        {view==="irm" && (
+          <div style={{ display:"flex", flexDirection:"column", flex:1, overflow:"hidden" }}>
+            <div style={{ padding:"10px 24px", background:"rgba(245,158,11,0.1)", borderBottom:`1px solid rgba(245,158,11,0.3)`, display:"flex", alignItems:"center", gap:10, flexShrink:0 }}>
+              <span style={{ fontSize:14, fontWeight:700, color:"#d97706", letterSpacing:"0.06em" }}>⚠ LICENSING</span>
+              <span style={{ fontSize:13, color:"#d97706", fontFamily:CAL }}>All Insider Risk Management capabilities require the <strong>Microsoft Purview Suite add-on</strong> (formerly M365 E5 Compliance). IRM is not available in M365 E3.</span>
+            </div>
+            <TrackDetailView
+              phases={irmPhases} active={irmActive} setActive={setIrmActive}
+              tab={irmTab} setTab={setIrmTab} dark={dark} t={t}
+            />
+          </div>
         )}
       </div>
     </div>
