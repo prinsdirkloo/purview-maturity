@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Design tokens — dark-first to match Purview Maturity app ── */
+:root {
+  /* BUI brand */
+  --orange:    #D9861C;
+  --orange-l:  rgba(217,134,28,0.18);
+  --orange-d:  #f0941f;
+  --orange-xl: rgba(217,134,28,0.08);
+  --orange-border: rgba(217,134,28,0.35);
+
+  /* Dark palette — matches maturity app deep navy */
+  --navy:      #0d1821;
+  --navy-l:    #111f2e;
+  --charcoal:  #16202b;
+  --card:      #1a2a38;
+  --card-l:    #1f3347;
+
+  /* Backgrounds */
+  --bg:        #0d1821;
+  --bg-s:      #111f2e;
+  --bg-card:   #1a2a38;
+  --bg-card-l: #1f3347;
+
+  /* Borders */
+  --border:    rgba(255,255,255,0.08);
+  --border-m:  rgba(255,255,255,0.14);
+  --border-l:  rgba(255,255,255,0.22);
+
+  /* Text */
+  --black:     #f0f0ec;
+  --text:      #e2e8f0;
+  --text-s:    #8fa3b8;
+  --text-m:    #526070;
+
+  /* Grey */
+  --grey:      #535657;
+  --grey-xl:   rgba(255,255,255,0.05);
+  --grey-l:    rgba(255,255,255,0.08);
+
+  /* Radii */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+
+  /* Status */
+  --ok:    #22c55e;
+  --ok-l:  rgba(34,197,94,0.12);
+  --ok-t:  #4ade80;
+  --err:   #ef4444;
+  --err-l: rgba(239,68,68,0.12);
+}
+
+/* ── Light mode override ── */
+html.light {
+  --bg:        #f4f1ec;
+  --bg-s:      #ede9e2;
+  --bg-card:   #ffffff;
+  --bg-card-l: #faf7f2;
+  --border:    rgba(0,0,0,0.08);
+  --border-m:  rgba(0,0,0,0.14);
+  --border-l:  rgba(0,0,0,0.22);
+  --black:     #1a1a1a;
+  --text:      #2a2a2a;
+  --text-s:    #535657;
+  --text-m:    #8a8680;
+  --grey-xl:   #f5f6f6;
+  --grey-l:    #ecedef;
+  --orange-l:  #faeeda;
+  --orange-xl: #fdf5e8;
+  --orange-border: rgba(217,134,28,0.4);
+  --ok-l:  #e4f4ec;
+  --ok-t:  #0d5c39;
+  --err-l: #fbeaea;
+}
+
+body {
+  font-family: 'Calibri', 'Segoe UI', system-ui, sans-serif;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+  line-height: 1.55;
+}
+
+button { cursor: pointer; font-family: inherit; }
+
+input[type=text],
+input[type=number],
+input[type=password],
+select,
+textarea {
+  width: 100%;
+  padding: 9px 13px;
+  border: 1px solid var(--border-m);
+  border-radius: var(--r-md);
+  background: var(--bg-s);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  height: 40px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+textarea { height: auto; resize: vertical; }
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(217,134,28,0.15);
+}
+
+code {
+  font-family: 'Consolas', 'Menlo', monospace;
+  font-size: 12px;
+  background: rgba(217,134,28,0.1);
+  color: var(--orange-d);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--orange-border);
+}
+
+html.light code {
+  background: rgba(217,134,28,0.08);
+  color: #a8620f;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-m); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-m); }
+
+/* Animations */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.step-enter { animation: fadeIn 0.2s ease; }

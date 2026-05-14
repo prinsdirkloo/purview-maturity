@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo } from "react";
 
 const BUI_ORANGE = "#D9861C";
 const BUI_GRAY   = "#535657";
@@ -9,25 +9,25 @@ const CAL        = "Calibri, 'Gill Sans MT', 'Gill Sans', Candara, sans-serif";
 // #000000 (neutral-black), #FFFFFF (neutral-white). Font: Calibri.
 function makeTheme(dark) {
   return dark ? {
-    // Dark mode: #000000 base per Brandline neutral-black
-    bg:"#000000", bgHeader:"#0a0a0a", bgSidebar:"#0a0a0a",
-    bgCard:"rgba(255,255,255,0.04)", bgStripe:"rgba(255,255,255,0.02)",
-    border:"rgba(255,255,255,0.1)", borderSub:"rgba(255,255,255,0.05)",
-    text1:"#ffffff", text2:"#d1d5db", text3:"#9ca3af", text4:"#6b7280",
-    text5:"#4b5563", textMuted:"#374151",
-    sidebarItem:"rgba(255,255,255,0.04)", sidebarBorder:"rgba(255,255,255,0.1)",
-    pipEmpty:"rgba(255,255,255,0.15)", cmItem:"rgba(255,255,255,0.04)",
-    cmItemBorder:"rgba(255,255,255,0.08)", noteText:"#6b7280", shadow:"none",
+    // ── DARK — deep navy (matches global.css --navy theme) ──
+    bg:"#0d1821", bgHeader:"#111f2e", bgSidebar:"#111f2e",
+    bgCard:"#1a2a38", bgStripe:"rgba(255,255,255,0.02)",
+    border:"rgba(255,255,255,0.08)", borderSub:"rgba(255,255,255,0.05)",
+    text1:"#e2e8f0", text2:"#cbd5e1", text3:"#94a3b8", text4:"#64748b",
+    text5:"#475569", textMuted:"#334155",
+    sidebarItem:"rgba(255,255,255,0.04)", sidebarBorder:"rgba(255,255,255,0.08)",
+    pipEmpty:"rgba(255,255,255,0.12)", cmItem:"rgba(255,255,255,0.04)",
+    cmItemBorder:"rgba(255,255,255,0.08)", noteText:"#64748b", shadow:"none",
   } : {
-    // Light mode: #FFFFFF base per Brandline neutral-white
-    bg:"#FFFFFF", bgHeader:"#FFFFFF", bgSidebar:"#FFFFFF",
-    bgCard:"#FFFFFF", bgStripe:"rgba(0,0,0,0.02)",
-    border:"rgba(0,0,0,0.1)", borderSub:"rgba(0,0,0,0.05)",
-    text1:"#000000", text2:"#1f2937", text3:"#4b5563", text4:"#6b7280",
-    text5:"#9ca3af", textMuted:"#d1d5db",
-    sidebarItem:"rgba(0,0,0,0.03)", sidebarBorder:"rgba(0,0,0,0.1)",
-    pipEmpty:"rgba(0,0,0,0.12)", cmItem:"rgba(0,0,0,0.03)",
-    cmItemBorder:"rgba(0,0,0,0.08)", noteText:"#6b7280",
+    // ── LIGHT — warm parchment (matches global.css html.light theme) ──
+    bg:"#f4f1ec", bgHeader:"#ede9e2", bgSidebar:"#ede9e2",
+    bgCard:"#ffffff", bgStripe:"rgba(0,0,0,0.02)",
+    border:"rgba(0,0,0,0.08)", borderSub:"rgba(0,0,0,0.05)",
+    text1:"#1a1a1a", text2:"#2a2a2a", text3:"#535657", text4:"#8a8680",
+    text5:"#b0aca6", textMuted:"#d1cdc7",
+    sidebarItem:"rgba(0,0,0,0.02)", sidebarBorder:"rgba(0,0,0,0.07)",
+    pipEmpty:"rgba(0,0,0,0.1)", cmItem:"rgba(0,0,0,0.03)",
+    cmItemBorder:"rgba(0,0,0,0.06)", noteText:"#8a8680",
     shadow:"0 1px 4px rgba(0,0,0,0.06)",
   };
 }
@@ -499,7 +499,7 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
             { label:"Labelling",  color:"#a78bfa",  text: boundaryLabel(labelCum, labelPhases, labelBound) },
             { label:"Insider Risk", color:"#f59e0b", text: boundaryLabel(irmCum,   irmPhases,   irmBound)   },
           ].map(b=>(
-            <div key={b.label} style={{ padding:"8px 14px", borderRadius:8, background:dark?`${b.color}0a`:`${b.color}08`, border:`1px solid ${b.color}25` }}>
+            <div key={b.label} style={{ padding:"8px 14px", borderRadius:8, background:dark?`${b.color}12`:`${b.color}08`, border:`1px solid ${b.color}25` }}>
               <span style={{ fontSize:11, fontWeight:700, color:b.color, letterSpacing:"0.09em", marginRight:8, fontFamily:CAL }}>{b.label} ENGAGEMENT ENDS</span>
               <span style={{ fontSize:11, fontWeight:700, color:t.text1, fontFamily:CAL }}>{b.text}</span>
             </div>
@@ -900,6 +900,8 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
 export default function App() {
   const [view,       setView]       = useState("roadmap"); // "roadmap" | "dlp" | "labels"
   const [dark,       setDark]       = useState(true);
+  // Sync html.light CSS class so global.css variables apply in both modes
+  React.useEffect(()=>{ document.documentElement.classList.toggle('light', !dark); }, [dark]);
   const [dlpActive,  setDlpActive]  = useState(0);
   const [labelActive,setLabelActive]= useState(0);
   const [dlpTab,     setDlpTab]     = useState("overview");
@@ -954,7 +956,7 @@ export default function App() {
             <div key={z.name} style={{ fontSize:12, padding:"3px 10px", borderRadius:99, border:`1px solid ${z.color}35`, color:z.color, background:`${z.color}0d`, letterSpacing:"0.1em", fontWeight:700 }}>{z.name}</div>
           ))}
           <div style={{ width:1, height:22, background:t.border, margin:"0 4px" }}/>
-          <ThemeToggle dark={dark} onToggle={()=>setDark(d=>!d)} t={t}/>
+          <ThemeToggle dark={dark} onToggle={()=>{ setDark(d=>{ const next=!d; document.documentElement.classList.toggle('light',!next); return next; }); }} t={t}/>
         </div>
       </header>
 
