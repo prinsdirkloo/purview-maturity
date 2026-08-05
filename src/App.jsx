@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo } from "react";
 
 const BUI_ORANGE = "#D9861C";
 const BUI_GRAY   = "#535657";
@@ -9,25 +9,25 @@ const CAL        = "Calibri, 'Gill Sans MT', 'Gill Sans', Candara, sans-serif";
 // #000000 (neutral-black), #FFFFFF (neutral-white). Font: Calibri.
 function makeTheme(dark) {
   return dark ? {
-    // ── DARK — deep navy (matches global.css --navy theme) ──
-    bg:"#0d1821", bgHeader:"#111f2e", bgSidebar:"#111f2e",
-    bgCard:"#1a2a38", bgStripe:"rgba(255,255,255,0.02)",
-    border:"rgba(255,255,255,0.08)", borderSub:"rgba(255,255,255,0.05)",
-    text1:"#e2e8f0", text2:"#cbd5e1", text3:"#94a3b8", text4:"#64748b",
-    text5:"#475569", textMuted:"#334155",
-    sidebarItem:"rgba(255,255,255,0.04)", sidebarBorder:"rgba(255,255,255,0.08)",
-    pipEmpty:"rgba(255,255,255,0.12)", cmItem:"rgba(255,255,255,0.04)",
-    cmItemBorder:"rgba(255,255,255,0.08)", noteText:"#64748b", shadow:"none",
+    // Dark mode: #000000 base per Brandline neutral-black
+    bg:"#000000", bgHeader:"#0a0a0a", bgSidebar:"#0a0a0a",
+    bgCard:"rgba(255,255,255,0.04)", bgStripe:"rgba(255,255,255,0.02)",
+    border:"rgba(255,255,255,0.1)", borderSub:"rgba(255,255,255,0.05)",
+    text1:"#ffffff", text2:"#d1d5db", text3:"#9ca3af", text4:"#6b7280",
+    text5:"#4b5563", textMuted:"#374151",
+    sidebarItem:"rgba(255,255,255,0.04)", sidebarBorder:"rgba(255,255,255,0.1)",
+    pipEmpty:"rgba(255,255,255,0.15)", cmItem:"rgba(255,255,255,0.04)",
+    cmItemBorder:"rgba(255,255,255,0.08)", noteText:"#6b7280", shadow:"none",
   } : {
-    // ── LIGHT — warm parchment (matches global.css html.light theme) ──
-    bg:"#f4f1ec", bgHeader:"#ede9e2", bgSidebar:"#ede9e2",
-    bgCard:"#ffffff", bgStripe:"rgba(0,0,0,0.02)",
-    border:"rgba(0,0,0,0.08)", borderSub:"rgba(0,0,0,0.05)",
-    text1:"#1a1a1a", text2:"#2a2a2a", text3:"#535657", text4:"#8a8680",
-    text5:"#b0aca6", textMuted:"#d1cdc7",
-    sidebarItem:"rgba(0,0,0,0.02)", sidebarBorder:"rgba(0,0,0,0.07)",
-    pipEmpty:"rgba(0,0,0,0.1)", cmItem:"rgba(0,0,0,0.03)",
-    cmItemBorder:"rgba(0,0,0,0.06)", noteText:"#8a8680",
+    // Light mode: #FFFFFF base per Brandline neutral-white
+    bg:"#FFFFFF", bgHeader:"#FFFFFF", bgSidebar:"#FFFFFF",
+    bgCard:"#FFFFFF", bgStripe:"rgba(0,0,0,0.02)",
+    border:"rgba(0,0,0,0.1)", borderSub:"rgba(0,0,0,0.05)",
+    text1:"#000000", text2:"#1f2937", text3:"#4b5563", text4:"#6b7280",
+    text5:"#9ca3af", textMuted:"#d1d5db",
+    sidebarItem:"rgba(0,0,0,0.03)", sidebarBorder:"rgba(0,0,0,0.1)",
+    pipEmpty:"rgba(0,0,0,0.12)", cmItem:"rgba(0,0,0,0.03)",
+    cmItemBorder:"rgba(0,0,0,0.08)", noteText:"#6b7280",
     shadow:"0 1px 4px rgba(0,0,0,0.06)",
   };
 }
@@ -44,14 +44,14 @@ const impactLevels = {
 
 // ── DLP PHASES ────────────────────────────────────────────────────────────────
 const dlpPhases = [
-  { num:"01", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Simulation Mode", subtitle:"Full policy configured — zero production impact", icon:"🔬", impact:"none",
+  { num:"01", zone:"ASSESS", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Simulation Mode", subtitle:"Full policy configured — zero production impact", icon:"🔬", impact:"none",
     desc:"Create complete DLP policies with all conditions, exceptions, and actions — but run them in simulation mode only. No user-facing actions occur. Validate policy logic, tune match accuracy, and understand your data exposure landscape before committing anything live.",
     config:[["Policy Mode","Simulation","neutral"],["Actions","None (simulated only)","off"],["Policy Tips","Off","off"],["User Notifications","Off","off"],["Incident Reports","Admin review only","active"]],
     outcomes:["Baseline data inventory","False positive identification","Scope validation","Zero user impact"],
     license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Simulation mode is fully covered by M365 E3 across Exchange, SharePoint, and OneDrive. No add-on is required to build, test, and tune policies in simulation. This is the right phase to validate scope before any licensing upgrade conversation.' },
     zoneDesc:"Build a comprehensive evidence base about your data landscape and policy behaviour before exposing any user-facing controls.", nextPhase:{ time:'2–4 weeks minimum', success:'False positive rate is understood and documented; matched items reviewed; conditions tuned; no unexpected high-volume matches remain unexplained', people:'DLP admin reviews report; security team aligned on scope; relevant business stakeholders briefed on what was found', process:'Produce a simulation findings report; document any policies that need condition changes before going live; get sign-off from security lead', technology:'Review DLP match activity in Purview portal; tune confidence thresholds and instance counts; validate all intended workloads are in scope', licensing:'No change — M365 E3 covers this phase', skip:false },
     tip:"Run simulation for a minimum of 2–4 weeks. Use Purview DLP reports to review matched items, refine conditions (confidence thresholds, instance counts), and document expected vs unexpected matches before progressing." },
-  { num:"02", zone:"DISCOVER", zoneColor:"#059669", color:"#059669",
+  { num:"02", zone:"ASSESS", zoneColor:"#059669", color:"#059669",
     colorBg:(d)=>d?"rgba(5,150,105,0.10)":"rgba(5,150,105,0.08)",
     colorBorder:(d)=>d?"rgba(5,150,105,0.30)":"rgba(5,150,105,0.35)",
     title:"Enforcement Pilot", subtitle:"Scoped hard block for a consenting group — time-boxed; transitions to Security Team Alerts (phase 03) on completion", icon:"🧪", impact:"moderate",
@@ -64,7 +64,7 @@ const dlpPhases = [
     nextPhase:{ time:'2–4 weeks (time-boxed)', success:'Exit criteria met: false positive rate within threshold, analyst response time within SLA, no legitimate workflows broken; all pilot group issues documented and resolved; findings report produced', people:'Pilot group includes business stakeholders (not just IT); security lead and at least one business unit manager have reviewed findings; helpdesk has handled real escalations', process:'Findings report shared with stakeholders; any false positives addressed before progressing; formal sign-off obtained from security lead and executive sponsor', technology:'Confirm policy conditions are correct across all intended workloads; verify alert routing and incident workflow function end-to-end', licensing:'M365 E3 for Exchange/SharePoint/OneDrive pilot scope. Purview Suite add-on required if Teams chat is included', skip:false },
     tip:"Define exit criteria before the pilot starts — not after. Typical criteria: fewer than X false positives per day, analyst response time under Y minutes, no legitimate business workflows broken. If exit criteria are not met, extend the pilot window and re-tune. On successful completion, move forward to phase 03 (Security Team Alerts) and begin the formal Educate zone progression.",
     pilotWarning:"IT-only pilots validate the technology — but a truly successful pilot must include real business stakeholders. Finance teams who handle payment data, HR staff who process employee records, legal who share sensitive contracts — these are the people whose workflows will actually be affected by enforcement. An IT-only pilot will tell you the policy fires correctly. A cross-functional pilot will tell you whether the policy fires on the right things, whether the justification process makes sense to real users, and whether your helpdesk can handle the volume. Recruit at least 3–4 business units into the pilot group and ensure each has a nominated point of contact who reports back on the experience." },
-  { num:"03", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Security Team Alerts", subtitle:"SOC/DLP team notified — users remain unaware", icon:"🔔", impact:"low",
+  { num:"03", zone:"ASSESS", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Security Team Alerts", subtitle:"SOC/DLP team notified — users remain unaware", icon:"🔔", impact:"low",
     desc:"Following a successful Enforcement Pilot (phase 02), the programme moves forward to this phase — actions removed, scope expanded to all users. Analysts receive real-time alerts when policy conditions are triggered, but users see nothing. This is the confirmed starting point for the permanent maturity progression: the pilot has validated that blocking works, now the organisation builds the analyst readiness and change management foundation before enforcement is introduced more broadly.",
     config:[["Policy Mode","Active","active"],["Actions","None","off"],["Admin Notifications","On — DLP/SOC team","active"],["Policy Tips","Off","off"],["User Notifications","Off","off"]],
     outcomes:["SOC triage readiness","Analyst playbook validation","Escalation path testing","Zero user impact"],
@@ -110,14 +110,14 @@ const dlpPhases = [
 
 // ── SENSITIVITY LABELLING PHASES ──────────────────────────────────────────────
 const labelPhases = [
-  { num:"01", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Discovery & Taxonomy Design", subtitle:"MIP Scanner, data mapping, label structure — no labels published", icon:"🗺️", impact:"none",
+  { num:"01", zone:"ASSESS", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Discovery & Taxonomy Design", subtitle:"MIP Scanner, data mapping, label structure — no labels published", icon:"🗺️", impact:"none",
     desc:"Before publishing a single label, run MIP Scanner (or Purview data discovery) across your on-premises and cloud repositories to understand what sensitive data you actually have. Use this to design your label taxonomy — typically 3–5 labels (Public → General → Confidential → Highly Confidential, optionally with sub-labels). Don't publish anything yet.",
     config:[["Labels Published","No","off"],["MIP Scanner","Active — discovery mode","active"],["User Visibility","None","off"],["Purview Analytics","On — data mapping","active"],["Taxonomy Design","In progress","neutral"]],
     outcomes:["Sensitive data inventory","Taxonomy design validated","Stakeholder alignment on labels","Zero user impact"],
     license:{ base:'M365 E3', addOn:null, addOnFeatures:[], note:'Data discovery and taxonomy design are fully covered by M365 E3. MIP Scanner (for on-premises file shares and SharePoint on-prem) is included with E3 but requires the AIP Unified Labelling client to be deployed. Purview data classification and Content Explorer for initial data mapping require the Purview Suite add-on — if not yet licensed, use MIP Scanner and manual inventory methods for the discovery phase.' },
     zoneDesc:"Build a data map before designing labels. The taxonomy you choose here is load-bearing — changing it retroactively after millions of files are labelled is painful.", nextPhase:{ time:'4–8 weeks', success:'Label taxonomy documented and agreed; MIP Scanner completed across all in-scope repositories; sensitive data inventory available; taxonomy validated with at least 3–4 non-IT business representatives', people:'Information security lead, legal, HR, finance and at least one executive sponsor must have reviewed and agreed the label names and definitions', process:'Taxonomy sign-off document produced; label descriptions written in plain language (not technical language); pilot group identified for phase 02', technology:'MIP Scanner deployed and completed; AIP Unified Labelling client deployed to pilot group endpoints', licensing:'M365 E3 covers this phase', skip:false },
     tip:"Most organisations design too many labels. Aim for 3–5 at the top level, with sub-labels only where there is a genuine functional difference in how the data should be handled. Complexity in the taxonomy directly causes user confusion at the point of labelling." },
-  { num:"02", zone:"DISCOVER", zoneColor:"#059669", color:"#059669",
+  { num:"02", zone:"ASSESS", zoneColor:"#059669", color:"#059669",
     colorBg:(d)=>d?"rgba(5,150,105,0.10)":"rgba(5,150,105,0.08)",
     colorBorder:(d)=>d?"rgba(5,150,105,0.30)":"rgba(5,150,105,0.35)",
     title:"Labels Published — Pilot", subtitle:"Taxonomy live, voluntary application — continues to Default Label (phase 03)", icon:"🏷️", impact:"minimal",
@@ -130,7 +130,7 @@ const labelPhases = [
     pilotWarning:"A common mistake is to pilot sensitivity labels only with IT staff or the security team. IT users are comfortable with classification concepts and rarely reflect how the broader organisation will behave. A meaningful label pilot must include people from finance, HR, legal, operations, and executive assistants — the roles that handle the most sensitive content every day. Watch which labels confuse them, which ones they skip, and which taxonomy names prompt questions. If a label name needs explaining, it needs renaming. The goal of this phase is not to prove that labels work technically — it is to prove that your taxonomy is intuitive enough for every type of user in your organisation.",
     nextPhase:{ time:'2–4 weeks', success:'Pilot users have encountered and voluntarily applied labels; taxonomy confusion points identified; no label names need renaming based on user feedback; organic adoption data collected', people:'Pilot group feedback collated (must include non-IT users); taxonomy owner reviewed feedback; comms plan for default label drafted', process:'Document which labels users found confusing; make any taxonomy changes before expanding; communicate the default label to all users', technology:'Review label usage analytics in Purview; confirm label policy is publishing correctly to all pilot endpoints and web apps', licensing:'M365 E3 covers this phase', skip:false },
     tip:"Collect voluntary application data during this phase. Which labels do users reach for most? Which do they avoid? This tells you whether your taxonomy makes sense to non-security people — the people who will use it every day." },
-  { num:"03", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Default Label Applied", subtitle:"General label on all new content — users can change freely", icon:"📌", impact:"low",
+  { num:"03", zone:"ASSESS", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Default Label Applied", subtitle:"General label on all new content — users can change freely", icon:"📌", impact:"low",
     desc:"Configure a default label (typically 'General') that is automatically applied to new documents and emails. No encryption, no mandatory classification beyond the default. Users see the label but can change it freely. This is the first moment labels become part of every user's experience.",
     config:[["Labels Published","Yes — all users","active"],["Default Label","General (auto-applied)","active"],["Mandatory Labelling","Off","off"],["Protection Actions","None","off"],["User Override","Free — no justification required","neutral"]],
     outcomes:["Universal label visibility","Default classification baseline","Change management entry point","Users aware labels exist"],
@@ -177,7 +177,7 @@ const labelPhases = [
 // ── INSIDER RISK MANAGEMENT PHASES ───────────────────────────────────────────
 // ⚠ ALL IRM phases require the Purview Suite add-on — no E3 baseline capability
 const irmPhases = [
-  { num:"01", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"IRM Enabled — Observation Only", subtitle:"Policies on, alerts generated, no investigation action taken", icon:"👁️", impact:"none",
+  { num:"01", zone:"ASSESS", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"IRM Enabled — Observation Only", subtitle:"Policies on, alerts generated, no investigation action taken", icon:"👁️", impact:"none",
     desc:"Enable Insider Risk Management policies in Microsoft Purview — starting with the built-in templates (Data leaks, Data theft by departing users, Security policy violations). IRM begins building behavioural baselines per user. Analysts can see alerts but no formal investigation workflow is active yet. This phase is purely about signal generation and baseline establishment.",
     config:[["IRM Analytics Scan","Run first — no policies required","active"],["IRM Policies","Active — observation mode","active"],["Alert Review","View only — no action","neutral"],["Investigation Workflow","Not yet active","off"],["HR Connector","Optional — recommended","neutral"],["Scope","All licensed users","active"]],
     outcomes:["Behavioural baseline established","Alert volume understood","Signal quality assessment","Zero user impact"],
@@ -185,7 +185,7 @@ const irmPhases = [
     zoneDesc:"IRM begins with observation. The system needs time to build accurate behavioural baselines before generating meaningful alerts. Rushing into investigations before baselines are established produces noise, not signal.",
     nextPhase:{ time:'3–4 weeks', success:'IRM policies generating alerts; alert volume is understood; signal types mapped to policy templates; no investigation action taken yet; analyst team identified', people:'IRM programme owner identified; security/SOC team briefed on IRM concept; legal and HR engaged on privacy and investigation obligations', process:'Document which IRM policy templates are active; review alert volume and categorisation; identify any immediate high-severity signals requiring escalation', technology:'IRM policies configured in Microsoft Purview; HR Connector configured if HRIS is available (strongly recommended for departing user signals); audit logging verified', licensing:'Purview Suite add-on required for all IRM capabilities. Confirm all users are licensed before activation.', skip:false },
     tip:"Connect your HR system before enabling IRM if at all possible. The HR Connector feeds IRM with resignation and termination dates — without it, departing user policies cannot generate their most valuable signals. This connector is the single highest-value configuration step in the IRM deployment." },
-  { num:"02", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Policy Tuning & Signal Validation", subtitle:"Alert triage, threshold calibration, false positive reduction", icon:"🔧", impact:"minimal",
+  { num:"02", zone:"ASSESS", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Policy Tuning & Signal Validation", subtitle:"Alert triage, threshold calibration, false positive reduction", icon:"🔧", impact:"minimal",
     desc:"Analyse the alerts generated in phase 01 and tune policy thresholds, indicators, and scoring. IRM uses a risk scoring model — adjust which activities count as risk indicators and how much weight each carries. Remove indicators generating consistent false positives. Add custom indicators where your organisation has specific risk patterns not covered by default templates.",
     config:[["Alert Triage","Active — analyst review","active"],["Threshold Tuning","In progress","neutral"],["Custom Indicators","Under review","neutral"],["Risk Score Calibration","Active","active"],["False Positive Register","Established","active"]],
     outcomes:["Calibrated risk thresholds","Reduced false positive rate","Custom indicator library","Analyst triage readiness"],
@@ -193,7 +193,7 @@ const irmPhases = [
     zoneDesc:"Signal quality determines investigation quality. Every false positive that reaches an analyst erodes trust in the system and wastes investigation capacity.",
     nextPhase:{ time:'4–6 weeks', success:'Alert volume is manageable and predominantly true positive; thresholds calibrated; false positive rate tracked and reducing; custom indicators reviewed and approved by legal and HR', people:'Legal and HR must review and approve custom indicator scope — privacy obligations apply; security lead signed off on threshold changes', process:'False positive register in use; weekly alert review cadence; change log for all threshold and indicator changes', technology:'IRM policy settings updated; any custom connectors for additional signal sources reviewed; alert triage dashboard configured', licensing:'No additional licensing beyond Purview Suite add-on already in place', skip:false },
     tip:"Get legal and HR involved in custom indicator decisions early. IRM monitors user behaviour — some indicators (personal storage uploads, after-hours access) can feel intrusive and must be proportionate to the risk being managed. Document the rationale for every active indicator." },
-  { num:"03", zone:"DISCOVER", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Analyst Triage Workflow", subtitle:"Formal investigation process active — cases opened and managed", icon:"🔍", impact:"low",
+  { num:"03", zone:"ASSESS", zoneColor:"#10b981", color:"#10b981", colorBg:(d)=>d?"rgba(16,185,129,0.07)":"rgba(16,185,129,0.06)", colorBorder:(d)=>d?"rgba(16,185,129,0.2)":"rgba(16,185,129,0.25)", title:"Analyst Triage Workflow", subtitle:"Formal investigation process active — cases opened and managed", icon:"🔍", impact:"low",
     desc:"Activate the formal investigation workflow. Analysts open cases for high-severity alerts, gather evidence through Content Explorer and Activity Explorer, and produce investigation summaries. Establish escalation paths to HR and legal for confirmed incidents. This phase builds the institutional capability to act on IRM alerts — not just observe them.",
     config:[["Case Management","Active","active"],["Content Explorer","Analyst access configured","active"],["Activity Explorer","Analyst access configured","active"],["Escalation Path","HR and legal defined","active"],["Investigation SLA","Defined and tracked","active"]],
     outcomes:["Active case management","Evidence gathering capability","Escalation path tested","Investigation SLA established"],
@@ -227,8 +227,90 @@ const irmPhases = [
 ];
 
 
+// ── AI SECURITY & GOVERNANCE PHASES ──────────────────────────────────────────
+// ⚠ All phases require the Purview Suite add-on. Phase 03 DLP for Copilot prompts
+//   is included with the M365 Copilot licence. Phase 05 requires an Azure subscription.
+const C_AI   = "#6366f1"; // indigo — distinct from all other tracks
+const C_AI_D = "#4f46e5"; // deeper indigo for ASSESS pilot-equivalent
+const aiPhases = [
+  { num:"01", zone:"ASSESS", zoneColor:C_AI, color:C_AI,
+    colorBg:(d)=>d?"rgba(99,102,241,0.07)":"rgba(99,102,241,0.06)",
+    colorBorder:(d)=>d?"rgba(99,102,241,0.2)":"rgba(99,102,241,0.25)",
+    title:"AI Activity Visibility", subtitle:"Understand the AI usage landscape before applying any controls", icon:"👁️", impact:"none",
+    desc:"Enable DSPM for AI in the Microsoft Purview portal and activate the default one-click policies in audit mode. The AI activity dashboard begins surfacing which AI applications are in use across the organisation — including Microsoft 365 Copilot, Copilot Chat, and third-party tools — what sensitive information is appearing in prompts, whether that information is labelled, and which users carry the highest AI-related risk. No controls are applied. This phase is purely observational and has zero user impact.",
+    config:[["DSPM for AI","Enabled — audit mode","active"],["Default One-Click Policies","Active — audit only, no blocking","neutral"],["AI Activity Dashboard","Active — AI apps, prompts, user risk","active"],["Device Onboarding","Recommended — required for full visibility","neutral"],["Purview Browser Extension","Deploy for Chrome/Firefox signal","neutral"],["IRM AI Policies","Optional — AI site visit detection","neutral"]],
+    outcomes:["AI application inventory established","Sensitive data in prompts visible","User AI risk levels surfaced","Oversharing risk areas identified","Zero user impact"],
+    license:{ base:"Purview Suite add-on", addOn:"Purview Suite add-on", addOnFeatures:["DSPM for AI — activity dashboard, one-click policies, data assessments","AI activity analytics and user risk scoring for AI interactions"], note:"DSPM for AI requires the Purview Suite add-on. DLP for Microsoft 365 Copilot prompts (phase 03) is included with the M365 Copilot licence and does not require the add-on separately. Device onboarding is required to gain visibility into sensitive data shared with third-party AI sites." },
+    zoneDesc:"Start by understanding before controlling. The AI usage picture that emerges in this phase will be surprising for most organisations — and will directly shape every decision in the phases that follow.",
+    nextPhase:{ time:"2–3 weeks", success:"AI activity dashboard populated with meaningful data; AI apps in use identified; sensitive data in prompts visible; user risk levels understood; no user-facing controls active", people:"Security and compliance lead reviews dashboard findings; IT admin confirms device onboarding scope; business stakeholders briefed on what AI tools are in use", process:"Document which AI apps are in use and which are sanctioned; identify the highest-risk users and locations; establish a baseline for prompt sensitivity before any controls are applied", technology:"DSPM for AI enabled in Purview portal; Purview browser extension deployed to managed devices for Chrome and Firefox signal; devices onboarded to Purview for endpoint visibility", licensing:"Purview Suite add-on required. If M365 Copilot is licensed, DLP for Copilot prompts in phase 03 is included at no additional cost.", skip:false },
+    tip:"Run DSPM for AI before enabling Microsoft 365 Copilot broadly. Most organisations discover significant oversharing risk and unlabelled sensitive content in this phase — content that Copilot could surface to any user with access. The AI activity dashboard is the evidence base for every governance decision that follows." },
+
+  { num:"02", zone:"ASSESS", zoneColor:C_AI, color:C_AI,
+    colorBg:(d)=>d?"rgba(99,102,241,0.07)":"rgba(99,102,241,0.06)",
+    colorBorder:(d)=>d?"rgba(99,102,241,0.2)":"rgba(99,102,241,0.25)",
+    title:"Oversharing Remediation", subtitle:"Fix the data estate before AI can surface it broadly", icon:"🔍", impact:"minimal",
+    desc:"DSPM for AI runs weekly data assessments across the top SharePoint sites used by Copilot, identifying files that are overshared, sensitive, or unlabelled. Custom assessments can be created for additional high-risk sites or user populations. This phase is about remediating the risk that already exists in the data estate — not adding controls to AI tools. It is the Copilot readiness gate: most organisations find unacceptable exposure here and should not enable Copilot broadly until the highest-risk sites are addressed.",
+    config:[["DSPM Data Assessments","Active — top 100 Copilot SharePoint sites","active"],["Custom Assessments","Configured for high-risk sites and users","active"],["Oversharing Remediation","Active — site permissions review","active"],["Sensitivity Label Coverage","Gap analysis running","active"],["Weekly Assessment Cadence","Automated — results in DSPM dashboard","active"]],
+    outcomes:["Overshared SharePoint sites identified","Sensitive unlabelled files found and flagged","Copilot readiness posture assessed","Critical remediation actions tracked","Label coverage gaps quantified"],
+    license:{ base:"Purview Suite add-on", addOn:"Purview Suite add-on", addOnFeatures:["DSPM for AI data assessments — weekly automated SharePoint site scanning","Custom oversharing assessments for specific users and sites","Remediation workflow integration with SharePoint site management"], note:"DSPM for AI data assessments require the Purview Suite add-on. Assessments run automatically once DSPM is enabled — no additional configuration is required for the default weekly scan of the top 100 Copilot-active SharePoint sites." },
+    zoneDesc:"Copilot does not bypass permissions — but it surfaces content that users already have access to, including content they never knew existed. Oversharing remediation ensures the data estate is fit for AI before AI is turned on at scale.",
+    nextPhase:{ time:"3–4 weeks", success:"Top SharePoint sites assessed; critical oversharing issues remediated; sensitive unlabelled content inventory completed; Copilot readiness posture report produced and reviewed by stakeholders", people:"SharePoint site owners engaged for permission remediation; sensitivity label taxonomy owner involved in label gap remediation; security lead reviews Copilot readiness posture report", process:"Remediation register established; site owners notified of oversharing findings; label application campaign initiated for highest-risk unlabelled content", technology:"DSPM data assessments running; SharePoint site access reviews initiated; sensitivity labelling track at phase 03 or above to support label remediation", licensing:"Purview Suite add-on required. Sensitivity label remediation requires labelling track at phase 03 (Default Label Applied) at minimum.", skip:false },
+    tip:"Do not enable Microsoft 365 Copilot for all users until this phase is complete for the highest-risk SharePoint sites. A Copilot deployment onto an unprepared data estate does not create new permissions risks — but it dramatically increases the likelihood that users will discover sensitive content they were technically permitted to access but never expected to see." },
+
+  { num:"03", zone:"EDUCATE", zoneColor:BUI_ORANGE, color:BUI_ORANGE,
+    colorBg:(d)=>d?"rgba(217,134,28,0.07)":"rgba(217,134,28,0.06)",
+    colorBorder:(d)=>d?"rgba(217,134,28,0.2)":"rgba(217,134,28,0.25)",
+    title:"Copilot & M365 AI Protection", subtitle:"Policy tips and soft controls on Copilot interactions", icon:"💡", impact:"low",
+    desc:"Deploy DLP policies scoped to the Microsoft 365 Copilot and Copilot Chat policy location. Three distinct controls are available: (1) block prompts containing sensitive information types from being processed — the user sees a policy tip and the prompt is not sent; (2) prevent sensitivity-labelled files from being used as Copilot grounding sources — Copilot will not include labelled content in responses; (3) block Copilot from using external web search when prompts contain sensitive data. Each control operates independently and cannot be combined in the same DLP rule.",
+    config:[["DLP — Prompt Protection","Active — SITs in prompts blocked","active"],["DLP — Labelled File Exclusion","Active — Copilot cannot ground on labelled files","active"],["DLP — Web Search Block","Active — external web search blocked on sensitive prompts","active"],["Policy Tips","On — users see explanation when blocked","active"],["Scope","M365 Copilot and Copilot Chat policy location","active"],["Rule Design","Separate rules for label and SIT conditions — cannot be combined","warn"]],
+    outcomes:["Sensitive data in prompts intercepted before processing","Labelled confidential files excluded from Copilot grounding","External web search blocked when prompts contain sensitive data","Users educated via policy tips — no hard denial yet"],
+    license:{ base:"M365 Copilot licence", addOn:"Purview Suite add-on", addOnFeatures:["DLP for labelled file exclusion from Copilot grounding — requires Purview Suite add-on","DLP web search blocking when prompts contain sensitive data — requires Purview Suite add-on"], note:"DLP for Microsoft 365 Copilot prompt protection (blocking SITs in prompt text) is included for all users with an M365 Copilot licence and does not require the Purview Suite add-on separately. Labelled file exclusion and web search blocking require the Purview Suite add-on. The Microsoft 365 Copilot and Copilot Chat DLP location is only available in custom policy templates — not in built-in templates." },
+    zoneDesc:"The first user-visible AI protection controls. Users experience Copilot being unable to process certain prompts or reference certain files — the policy tip explains why. This builds awareness before stricter enforcement is applied to third-party tools.",
+    nextPhase:{ time:"4–6 weeks", success:"Policy tips appearing for users when sensitive prompts are blocked; labelled file exclusion working correctly in Word, Excel, PowerPoint; no business-critical workflows broken; analysts reviewing DLP match activity for Copilot workload", people:"Helpdesk briefed on Copilot DLP policy tips; business unit representatives confirm no legitimate workflows are blocked; change communications sent to Copilot users before activation", process:"DLP policy for Copilot tested in simulation mode before enforcement; separate rules created for label-condition and SIT-condition cases; false positive review cadence established", technology:"DLP policies created using custom policy template with Copilot location; Purview Suite add-on licensed for labelled file exclusion; test Copilot interactions confirm policy tip behaviour", licensing:"M365 Copilot licence covers prompt protection. Purview Suite add-on required for labelled file exclusion and web search blocking.", skip:false },
+    tip:"The Microsoft 365 Copilot and Copilot Chat DLP location is only available in custom policy templates — the built-in templates do not expose it. Also note that a label condition and a SIT condition cannot be combined in the same DLP rule. If you need both types of protection, create two separate rules within the same policy." },
+
+  { num:"04", zone:"ENFORCE", zoneColor:"#ef4444", color:"#ef4444",
+    colorBg:(d)=>d?"rgba(239,68,68,0.07)":"rgba(239,68,68,0.06)",
+    colorBorder:(d)=>d?"rgba(239,68,68,0.2)":"rgba(239,68,68,0.25)",
+    title:"Shadow AI Controls — Browser & Endpoint", subtitle:"Block sensitive data from reaching unsanctioned AI tools", icon:"🚫", impact:"moderate",
+    isBrowserWarning:true,
+    browserWarning:"Deploy the Purview browser extension to Chrome and Firefox before mandating Edge for Business as the enforcement browser. Users who discover that Chrome is unprotected will use it as a workaround — and the extension is what closes that gap. According to Microsoft's documentation, when a Purview DLP policy is configured to block, users are prevented at the device level from opening Firefox and other non-Edge browsers — but Chrome is only covered when the Purview extension is installed and up to date. Protect all browsers before enforcing any.",
+    desc:"Extend AI data protection to unsanctioned and third-party AI tools — the shadow AI problem. Edge for Business inline DLP intercepts uploads, paste actions, and prompts in real time as users interact with consumer AI tools in the browser. The Purview browser extension extends the same DLP policies to Chrome and Firefox. Endpoint DLP policies block users from pasting or uploading sensitive data to AI sites including ChatGPT, Gemini, DeepSeek, Perplexity, and Qwen Chat. IRM policies detect visits to AI sites and risky AI usage patterns, feeding risk scores into Adaptive Protection. Communication Compliance policies detect unethical behaviour in AI interactions.",
+    config:[["Edge for Business Inline DLP","Active — prompts and uploads intercepted","active"],["Purview Browser Extension","Deployed — Chrome and Firefox covered","active"],["Endpoint DLP — AI Sites","Active — paste/upload to AI sites blocked","danger"],["Blocked AI Sites","ChatGPT, Gemini, DeepSeek, Perplexity, Qwen Chat","danger"],["IRM — AI Site Visit Detection","Active — visits and risky usage detected","active"],["Communication Compliance","Active — unethical AI interactions flagged","active"],["Adaptive Protection","IRM AI risk scores feed DLP enforcement","active"]],
+    outcomes:["Shadow AI usage visible and controlled","Sensitive data blocked from leaving via browser to unsanctioned AI","IRM risk signals from AI usage feeding Adaptive Protection","Unethical AI interactions surfaced via Communication Compliance","Consistent enforcement across Edge, Chrome, and Firefox"],
+    license:{ base:"Purview Suite add-on", addOn:"Purview Suite add-on", addOnFeatures:["Endpoint DLP for browser-based AI site blocking — requires device onboarding","Purview browser extension for Chrome and Firefox DLP enforcement","IRM AI site visit detection and risky AI usage policies","Communication Compliance for unethical behaviour in AI interactions","Edge for Business inline DLP — some controls require M365 E5"], note:"All capabilities in this phase require the Purview Suite add-on and device onboarding. Some Edge for Business controls (clipboard blocking, screenshot prevention for labelled content) specifically require M365 E5. The Purview browser extension is required for Chrome and Firefox to receive the same DLP enforcement as Edge — without it, users can bypass controls by switching browsers." },
+    zoneDesc:"Shadow AI is the same data exfiltration risk as shadow IT — but with higher stakes. When employees paste sensitive information into consumer AI tools, that data can be retained and used to train models. This phase closes the gap between what Copilot protects and what employees actually use.",
+    nextPhase:{ time:"4–8 weeks", success:"Browser extension deployed across managed Chrome and Firefox; Endpoint DLP active for AI sites; IRM AI usage policies generating signal; Communication Compliance detecting unethical interactions; Adaptive Protection connecting AI risk scores to DLP enforcement", people:"IT admin coordinates browser extension deployment via Intune or GPO; helpdesk briefed on blocked AI site behaviour and redirect to approved tools; legal reviews Communication Compliance scope", process:"Approved AI tools list published to users; redirect experience configured in Edge (blocked AI sites redirect to Copilot); exception process defined for legitimate use cases requiring third-party AI access", technology:"Purview browser extension deployed to managed devices; Endpoint DLP policies scoped to AI site URLs; IRM AI site visit policy active; Edge for Business management policies configured", licensing:"Purview Suite add-on + device onboarding required for all capabilities. M365 E5 required for advanced Edge for Business label-based controls.", skip:false },
+    tip:"Configure the blocked AI sites in Edge for Business to redirect users to Microsoft 365 Copilot — not just show a block page. The redirect to an approved, enterprise-protected alternative dramatically reduces user frustration and shadow AI recurrence. Microsoft has built this redirect experience natively into Edge for Business." },
+
+  { num:"05", zone:"ENFORCE", zoneColor:"#ef4444", color:"#ef4444",
+    colorBg:(d)=>d?"rgba(239,68,68,0.07)":"rgba(239,68,68,0.06)",
+    colorBorder:(d)=>d?"rgba(239,68,68,0.2)":"rgba(239,68,68,0.25)",
+    title:"Network & Advanced Enforcement", subtitle:"Network-layer AI traffic control and enterprise AI app compliance capture", icon:"🌐", impact:"elevated",
+    desc:"Extend Purview DLP controls to the network layer via SASE integration, reaching AI traffic that cannot be controlled at the endpoint or browser — including unmanaged devices, BYOD, and hybrid environments. Palo Alto Networks Prisma SASE (and compatible partners) integrates with Purview to detect and block sensitive data in AI prompts and responses transiting the network. DSPM collection policies capture prompts and responses from enterprise AI apps (ChatGPT Enterprise, Copilot Studio agents, and apps integrated via Microsoft Entra or Microsoft Foundry) for regulatory compliance, eDiscovery, and data lifecycle management. Adaptive Protection applies the strictest DLP controls to users whose IRM AI risk scores are elevated.",
+    config:[["SASE Integration","Active — Palo Alto Prisma SASE or equivalent","active"],["Network-Level AI DLP","Active — sensitive data in AI traffic blocked at network","active"],["DSPM Collection Policies","Active — enterprise AI app prompts captured","active"],["Azure Subscription","Linked — pay-as-you-go for non-M365 AI app coverage","warn"],["Adaptive Protection — AI","Elevated AI-risk users receive hardest controls","danger"],["eDiscovery Integration","AI interactions available for legal holds","active"]],
+    outcomes:["Network-layer coverage of AI traffic for unmanaged devices","Enterprise AI app interactions captured for compliance","Regulatory posture for AI interactions established","Consistent enforcement regardless of device or browser","AI interactions available for eDiscovery and data lifecycle management"],
+    license:{ base:"Purview Suite add-on", addOn:"Purview Suite add-on", addOnFeatures:["SASE partner integration for network-level DLP on AI traffic (requires Palo Alto Prisma SASE or compatible partner licence)","DSPM collection policies for enterprise AI app prompt and response capture","Pay-as-you-go billing via Azure subscription for non-M365 enterprise AI app coverage","eDiscovery integration for AI interaction capture"], note:"Phase 05 requires the Purview Suite add-on plus an Azure subscription linked to the Purview tenant for pay-as-you-go billing on non-Microsoft 365 enterprise AI app coverage. The SASE integration also requires a compatible SASE partner licence (Palo Alto Networks Prisma SASE or an alternative from the Purview SASE partner ecosystem). This is the most infrastructure-intensive phase in the track." },
+    zoneDesc:"The network layer is the last enforcement boundary before data leaves the organisation entirely. SASE integration closes the gap for devices that cannot be managed at the endpoint — the scenario that applies to contractors, BYOD, and shared devices.",
+    nextPhase:{ time:"Ongoing", success:"SASE integration active and enforcing; enterprise AI app prompts captured and available in Purview; Adaptive Protection connecting AI IRM risk to DLP; compliance team has reviewed AI interaction capture scope with legal", people:"Network team involved in SASE configuration; legal and compliance confirm scope of AI interaction capture for regulatory purposes; SASE partner (if applicable) engaged for integration", process:"SASE integration tested with representative AI traffic; collection policy scope reviewed by legal before activation; AI interaction retention period set in data lifecycle management", technology:"Azure subscription linked to Purview for pay-as-you-go; SASE partner integration configured; DSPM collection policies scoped to enterprise AI apps; eDiscovery holds configured for AI interactions where required", licensing:"Purview Suite add-on + Azure subscription + SASE partner licence required. Confirm billing configuration before activating collection policies at scale.", skip:false },
+    tip:"The pay-as-you-go billing model for non-Microsoft 365 enterprise AI app coverage can produce unexpected costs if collection policies are scoped too broadly. Start with a narrow scope — specific enterprise AI apps and specific user groups — and expand once the cost model is understood. Link the Azure subscription before creating collection policies, not after." },
+
+  { num:"06", zone:"GOVERN", zoneColor:BUI_GRAY, color:BUI_GRAY,
+    colorBg:(d)=>d?"rgba(83,86,87,0.07)":"rgba(83,86,87,0.06)",
+    colorBorder:(d)=>d?"rgba(83,86,87,0.2)":"rgba(83,86,87,0.25)",
+    title:"AI Governance", subtitle:"Sustained AI risk programme — policy, compliance, and lifecycle management", icon:"♻️", impact:"minimal",
+    desc:"The AI Security programme reaches its mature state. Quarterly reviews of AI activity reports surface trends, new AI tools entering the environment, and changes in user risk levels. The organisation's AI acceptable use policy is aligned with DSPM controls so that policy and technical enforcement are consistent. Agent monitoring via DSPM surfaces AI agent interactions for governance. Sensitivity label coverage is reviewed and improved continuously — each improvement directly reduces Copilot oversharing risk. Applicable AI regulation (EU AI Act and jurisdiction-specific obligations) is monitored and addressed through the DSPM regulatory guidance capability.",
+    config:[["AI Activity Review Cadence","Quarterly — AI app inventory, user risk trends","neutral"],["Acceptable Use Policy","Aligned with DSPM controls","active"],["Agent Monitoring","Active — Copilot Studio and enterprise agents","active"],["Label Coverage Reviews","Quarterly — reduces Copilot oversharing risk","active"],["Regulatory Guidance","DSPM AI regulations guidance active","active"],["New AI App Detection","Continuous — new shadow AI tools surfaced","active"]],
+    outcomes:["Sustainable AI risk governance programme","Regulatory posture maintained and evidenced","AI acceptable use policy technically enforced","Agent interactions governed and auditable","Label coverage continuously improving"],
+    license:{ base:"Purview Suite add-on", addOn:"Purview Suite add-on", addOnFeatures:["DSPM AI regulatory guidance — jurisdiction-specific AI compliance recommendations","Agent monitoring and governance via DSPM for Copilot Studio and enterprise agents","Audit (Premium) for extended AI interaction log retention"], note:"All governance capabilities are included in the Purview Suite add-on already in place from earlier phases. Audit (Premium) is specifically recommended for extended retention of AI interaction logs — standard 90-day retention may be insufficient for regulatory purposes in some jurisdictions." },
+    zoneDesc:"AI governance is what makes the protection programme sustainable. New AI tools enter the environment continuously — without a structured governance cadence, the controls deployed in earlier phases become stale and the organisation falls behind the pace of AI adoption.",
+    nextPhase:{ skip:true },
+    tip:"Feed AI activity report findings back into the sensitivity labelling track. Patterns of AI interactions revealing unlabelled sensitive content are a labelling gap signal — not just an AI risk signal. The AI Security track and the Sensitivity Labelling track should be informing each other continuously at this maturity level." },
+];
+
+
 const zones = [
-  { name:"DISCOVER", color:"#10b981" },
+  { name:"ASSESS",   color:"#10b981" },
   { name:"EDUCATE",  color:BUI_ORANGE },
   { name:"ENFORCE",  color:"#ef4444" },
   { name:"GOVERN",   color:BUI_GRAY },
@@ -314,21 +396,24 @@ function UserImpactPanel({ impactKey, dark, t }) {
 // Phase durations in weeks — drives proportional block widths
 const DLP_DURATIONS    = [3, 3, 3, 6, 8, 12, 12, 12]; // 8 phases: sim,pilot,alerts,tips,soft,hard,adaptive,cont-imp
 const IRM_DURATIONS    = [3, 4, 3, 6, 12, 12];      // 6 IRM phases
+const AI_DURATIONS     = [3, 4, 5, 6, 8, 12];       // 6 AI Security phases
 const LABEL_DURATIONS  = [6, 3, 3, 5, 6, 8, 10, 12]; // 8 Label phases (total 53w)
 
-const ZONE_COLORS = { DISCOVER:"#10b981", EDUCATE:BUI_ORANGE, ENFORCE:"#ef4444", GOVERN:BUI_GRAY };
+const ZONE_COLORS = { ASSESS:"#10b981", EDUCATE:BUI_ORANGE, ENFORCE:"#ef4444", GOVERN:BUI_GRAY };
 
-function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabelTab, setIrmActive, setIrmTab, setView }) {
+function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabelTab, setIrmActive, setIrmTab, setAiActive, setAiTab, setView }) {
   const [showScope, setShowScope] = useState(true);
   // Three independent scope lines — one per track
   const [dlpLineX,   setDlpLineX]   = useState(0.55);
   const [labelLineX, setLabelLineX] = useState(0.55);
   const [irmLineX,   setIrmLineX]   = useState(0.55);
+  const [aiLineX,    setAiLineX]    = useState(0.55);
   // Which track is currently being dragged
   const [draggingTrack, setDraggingTrack] = useState(null); // "dlp"|"label"|"irm"|null
   const dlpRef   = useRef(null);
   const labelRef = useRef(null);
   const irmRef   = useRef(null);
+  const aiRef    = useRef(null);
 
   // Cumulative width offsets (0..1) for each track
   function getCumulative(durations) {
@@ -339,6 +424,7 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
   const dlpCum   = getCumulative(DLP_DURATIONS);
   const labelCum = getCumulative(LABEL_DURATIONS);
   const irmCum   = getCumulative(IRM_DURATIONS);
+  const aiCum    = getCumulative(AI_DURATIONS);
 
   // Which phase index is the boundary for a given track
   function boundaryIndex(cum, lineX) {
@@ -351,6 +437,7 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
   const dlpBound   = boundaryIndex(dlpCum,   dlpLineX);
   const labelBound = boundaryIndex(labelCum, labelLineX);
   const irmBound   = boundaryIndex(irmCum,   irmLineX);
+  const aiBound    = boundaryIndex(aiCum,    aiLineX);
 
   // Per-track drag handlers using pointer capture on each track's own ref
   function makeTrackHandlers(trackId, ref, setLineX) {
@@ -379,6 +466,7 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
   const dlpHandlers   = showScope ? makeTrackHandlers("dlp",   dlpRef,   setDlpLineX)   : {};
   const labelHandlers = showScope ? makeTrackHandlers("label", labelRef, setLabelLineX) : {};
   const irmHandlers   = showScope ? makeTrackHandlers("irm",   irmRef,   setIrmLineX)   : {};
+  const aiHandlers    = showScope ? makeTrackHandlers("ai",    aiRef,    setAiLineX)    : {};
 
   // Label for current boundary
   function boundaryLabel(cum, phases, bound) {
@@ -391,7 +479,8 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
   const dlpTotal   = DLP_DURATIONS.reduce((a,b)=>a+b,0);
   const labelTotal = LABEL_DURATIONS.reduce((a,b)=>a+b,0);
   const irmTotal   = IRM_DURATIONS.reduce((a,b)=>a+b,0);
-  const maxWeeks   = Math.max(dlpTotal, labelTotal, irmTotal);
+  const aiTotal    = AI_DURATIONS.reduce((a,b)=>a+b,0);
+  const maxWeeks   = Math.max(dlpTotal, labelTotal, irmTotal, aiTotal);
 
   function TrackRow({ phases, durations, cum, bound, trackLabel, trackColor, onPhaseClick, lineX, trackRef, handlers, isDragging }) {
     const TRACK_H = 96;
@@ -493,18 +582,49 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
       <div style={{ background:t.bgCard, border:`1px solid ${t.border}`, borderRadius:14, padding:"20px 22px 16px", boxShadow:t.shadow, marginBottom:16 }}>
 
         {/* Boundary labels — only when scope line visible */}
-        {showScope && <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginBottom:16 }}>
+        {showScope && <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr 1fr", gap:12, marginBottom:16 }}>
           {[
             { label:"DLP",        color:"#3b82f6",  text: boundaryLabel(dlpCum,   dlpPhases,   dlpBound)   },
             { label:"Labelling",  color:"#a78bfa",  text: boundaryLabel(labelCum, labelPhases, labelBound) },
             { label:"Insider Risk", color:"#f59e0b", text: boundaryLabel(irmCum,   irmPhases,   irmBound)   },
+            { label:"AI Security",  color:"#6366f1", text: boundaryLabel(aiCum,    aiPhases,    aiBound)    },
           ].map(b=>(
-            <div key={b.label} style={{ padding:"8px 14px", borderRadius:8, background:dark?`${b.color}12`:`${b.color}08`, border:`1px solid ${b.color}25` }}>
+            <div key={b.label} style={{ padding:"8px 14px", borderRadius:8, background:dark?`${b.color}0a`:`${b.color}08`, border:`1px solid ${b.color}25` }}>
               <span style={{ fontSize:11, fontWeight:700, color:b.color, letterSpacing:"0.09em", marginRight:8, fontFamily:CAL }}>{b.label} ENGAGEMENT ENDS</span>
               <span style={{ fontSize:11, fontWeight:700, color:t.text1, fontFamily:CAL }}>{b.text}</span>
             </div>
           ))}
         </div>}
+
+        {/* ── DARK DATA DISCOVERY PRE-PHASE BAND ── */}
+        <div style={{ marginBottom:16, border:`1.5px dashed rgba(83,86,87,0.4)`, borderRadius:10, overflow:"hidden", background:dark?"rgba(83,86,87,0.08)":"rgba(83,86,87,0.04)" }}>
+          {/* Left accent bar */}
+          <div style={{ display:"flex" }}>
+            <div style={{ width:6, flexShrink:0, background:BUI_GRAY }}/>
+            <div style={{ flex:1, padding:"12px 16px" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:8, flexWrap:"wrap" }}>
+                <span style={{ fontSize:14, fontWeight:700, color:BUI_GRAY, fontFamily:CAL }}>Dark Data Discovery</span>
+                <span style={{ fontSize:11, fontWeight:700, letterSpacing:"0.07em", padding:"2px 9px", borderRadius:99, background:"rgba(83,86,87,0.1)", color:BUI_GRAY, border:"1px dashed rgba(83,86,87,0.35)", fontFamily:CAL }}>OPTIONAL · RECOMMENDED</span>
+                <span style={{ fontSize:11, color:t.text4, fontFamily:CAL }}>· Pre-engagement · Spans all three tracks</span>
+              </div>
+              <p style={{ fontSize:13, color:t.text3, margin:"0 0 8px", lineHeight:1.6, fontFamily:CAL }}>
+                A Dark Data Discovery engagement scans your environment to identify where sensitive information lives, which locations carry the highest risk, and what data categories exist — before any policies are deployed. The findings directly inform DLP policy scope and SIT design, sensitivity label taxonomy design, and Insider Risk Management priorities across all three tracks.
+              </p>
+              <div style={{ display:"flex", flexWrap:"wrap", gap:6, marginBottom:6 }}>
+                {["Content Search","MIP Scanner (on-premises)","Oversharing Assessment","Sensitive Information Type mapping","Risk location ranking","Data category inventory"].map((item,i)=>(
+                  <span key={i} style={{ fontSize:11, padding:"2px 10px", borderRadius:99, background:dark?"rgba(83,86,87,0.1)":"rgba(83,86,87,0.07)", border:"1px solid rgba(83,86,87,0.2)", color:BUI_GRAY, fontFamily:CAL }}>{item}</span>
+                ))}
+              </div>
+              <p style={{ fontSize:12, color:t.text4, margin:0, fontFamily:CAL, fontStyle:"italic" }}>
+                Also relevant for Microsoft Copilot adoption — oversharing and unclassified content pose a risk when Copilot can surface sensitive data broadly. A Dark Data Discovery engagement identifies these risks before Copilot is enabled.
+              </p>
+            </div>
+          </div>
+          {/* Downward connector hint */}
+          <div style={{ textAlign:"center", padding:"4px 0 6px", borderTop:`1px dashed rgba(83,86,87,0.2)`, fontSize:11, color:BUI_GRAY, fontFamily:CAL }}>
+            ↓ Outputs feed into all three tracks below
+          </div>
+        </div>
 
         {/* ── DRAGGABLE GANTT AREA ── */}
         <div style={{ position:"relative" }}>
@@ -536,6 +656,16 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
             lineX={irmLineX} trackRef={irmRef} handlers={irmHandlers} isDragging={draggingTrack==="irm"}
           />
 
+          <div style={{ height:10 }}/>
+
+          {/* AI Security track */}
+          <TrackRow
+            phases={aiPhases} durations={AI_DURATIONS} cum={aiCum} bound={aiBound}
+            trackLabel="AI SECURITY & GOVERNANCE" trackColor="#6366f1"
+            onPhaseClick={(i)=>{ setAiActive(i); setAiTab("overview"); setView("ai"); }}
+            lineX={aiLineX} trackRef={aiRef} handlers={aiHandlers} isDragging={draggingTrack==="ai"}
+          />
+
         </div>
 
         {/* ── WEEK SCALE BAR ── */}
@@ -565,7 +695,7 @@ function RoadmapView({ dark, t, setDlpActive, setDlpTab, setLabelActive, setLabe
           <div style={{ width:2, height:16, background:BUI_ORANGE }}/>
           <span>Engagement boundary — drag each track's line independently</span>
         </div>}
-        {[{z:"DISCOVER",c:"#10b981"},{z:"EDUCATE",c:BUI_ORANGE},{z:"ENFORCE",c:"#ef4444"},{z:"GOVERN",c:BUI_GRAY}].map(z=>(
+        {[{z:"ASSESS",c:"#10b981"},{z:"EDUCATE",c:BUI_ORANGE},{z:"ENFORCE",c:"#ef4444"},{z:"GOVERN",c:BUI_GRAY},{z:"AI TRACK",c:"#6366f1"}].map(z=>(
           <div key={z.z} style={{ display:"flex", alignItems:"center", gap:5, fontSize:13, color:t.text3, fontFamily:CAL }}>
             <div style={{ width:10, height:10, borderRadius:2, background:z.c }}/>
             <span>{z.z}</span>
@@ -729,6 +859,15 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
                   <span style={{ fontSize:11, fontWeight:700, color:"#ef4444", letterSpacing:"0.1em" }}>IMPORTANT — PILOT COMPOSITION</span>
                 </div>
                 <p style={{ fontSize:14, color:t.text2, margin:0, lineHeight:1.65, fontFamily:CAL }}>{phase.pilotWarning}</p>
+              </div>
+            )}
+            {phase.isBrowserWarning && phase.browserWarning && (
+              <div style={{ background:dark?"rgba(239,68,68,0.07)":"rgba(239,68,68,0.06)", border:"1px solid rgba(239,68,68,0.3)", borderLeft:"3px solid #ef4444", borderRadius:"0 10px 10px 0", padding:"14px 20px", marginBottom:18 }}>
+                <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
+                  <div style={{ width:8, height:8, borderRadius:"50%", background:"#ef4444", flexShrink:0 }}/>
+                  <span style={{ fontSize:11, fontWeight:700, color:"#ef4444", letterSpacing:"0.1em" }}>IMPORTANT — BROWSER COVERAGE</span>
+                </div>
+                <p style={{ fontSize:14, color:t.text2, margin:0, lineHeight:1.65, fontFamily:CAL }}>{phase.browserWarning}</p>
               </div>
             )}
             {phase.isPilot && (
@@ -900,14 +1039,14 @@ function TrackDetailView({ phases, active, setActive, tab, setTab, dark, t }) {
 export default function App() {
   const [view,       setView]       = useState("roadmap"); // "roadmap" | "dlp" | "labels"
   const [dark,       setDark]       = useState(true);
-  // Sync html.light CSS class so global.css variables apply in both modes
-  React.useEffect(()=>{ document.documentElement.classList.toggle('light', !dark); }, [dark]);
   const [dlpActive,  setDlpActive]  = useState(0);
   const [labelActive,setLabelActive]= useState(0);
   const [dlpTab,     setDlpTab]     = useState("overview");
   const [labelTab,   setLabelTab]   = useState("overview");
   const [irmActive,  setIrmActive]  = useState(0);
   const [irmTab,     setIrmTab]     = useState("overview");
+  const [aiActive,   setAiActive]   = useState(0);
+  const [aiTab,      setAiTab]      = useState("overview");
 
   const t = useMemo(()=>makeTheme(dark),[dark]);
 
@@ -916,6 +1055,7 @@ export default function App() {
     { id:"dlp",     label:"DLP Policies"        },
     { id:"labels",  label:"Sensitivity Labels" },
     { id:"irm",     label:"Insider Risk"        },
+    { id:"ai",      label:"AI Security"         },
   ];
 
   return (
@@ -941,7 +1081,7 @@ export default function App() {
           <div style={{ width:1, height:26, background:t.border }}/>
           <div>
             <div style={{ fontSize:11, fontWeight:700, color:t.text1 }}>Microsoft Purview</div>
-            <div style={{ fontSize:13, color:BUI_GRAY, letterSpacing:"0.08em" }}>{view==="roadmap"?"ADOPTION ROADMAP":view==="irm"?"INSIDER RISK":"MATURITY FRAMEWORK"}</div>
+            <div style={{ fontSize:13, color:BUI_GRAY, letterSpacing:"0.08em" }}>{view==="roadmap"?"ADOPTION ROADMAP":view==="irm"?"INSIDER RISK":view==="ai"?"AI SECURITY":"MATURITY FRAMEWORK"}</div>
           </div>
           <div style={{ width:1, height:26, background:t.border }}/>
           {/* Track switcher */}
@@ -956,7 +1096,7 @@ export default function App() {
             <div key={z.name} style={{ fontSize:12, padding:"3px 10px", borderRadius:99, border:`1px solid ${z.color}35`, color:z.color, background:`${z.color}0d`, letterSpacing:"0.1em", fontWeight:700 }}>{z.name}</div>
           ))}
           <div style={{ width:1, height:22, background:t.border, margin:"0 4px" }}/>
-          <ThemeToggle dark={dark} onToggle={()=>{ setDark(d=>{ const next=!d; document.documentElement.classList.toggle('light',!next); return next; }); }} t={t}/>
+          <ThemeToggle dark={dark} onToggle={()=>setDark(d=>!d)} t={t}/>
         </div>
       </header>
 
@@ -968,6 +1108,7 @@ export default function App() {
             dlpActive={dlpActive} setDlpActive={setDlpActive} setDlpTab={setDlpTab}
             labelActive={labelActive} setLabelActive={setLabelActive} setLabelTab={setLabelTab}
             irmActive={irmActive} setIrmActive={setIrmActive} setIrmTab={setIrmTab}
+            aiActive={aiActive} setAiActive={setAiActive} setAiTab={setAiTab}
             setView={setView}
           />
         )}
@@ -992,6 +1133,18 @@ export default function App() {
             <TrackDetailView
               phases={irmPhases} active={irmActive} setActive={setIrmActive}
               tab={irmTab} setTab={setIrmTab} dark={dark} t={t}
+            />
+          </div>
+        )}
+        {view==="ai" && (
+          <div style={{ display:"flex", flexDirection:"column", flex:1, overflow:"hidden" }}>
+            <div style={{ padding:"10px 24px", background:"rgba(99,102,241,0.1)", borderBottom:`1px solid rgba(99,102,241,0.3)`, display:"flex", alignItems:"center", gap:10, flexShrink:0 }}>
+              <span style={{ fontSize:14, fontWeight:700, color:"#6366f1", letterSpacing:"0.06em" }}>⚠ LICENSING</span>
+              <span style={{ fontSize:13, color:"#6366f1", fontFamily:CAL }}>All AI Security capabilities require the <strong>Microsoft Purview Suite add-on</strong>. DLP for Copilot prompts (phase 03) is included with the <strong>M365 Copilot licence</strong>. Phase 05 requires an <strong>Azure subscription</strong> for pay-as-you-go coverage of non-Microsoft 365 AI apps.</span>
+            </div>
+            <TrackDetailView
+              phases={aiPhases} active={aiActive} setActive={setAiActive}
+              tab={aiTab} setTab={setAiTab} dark={dark} t={t}
             />
           </div>
         )}
